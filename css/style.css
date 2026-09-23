@@ -254,3 +254,35 @@ a:focus-visible {
   border-left: 4px solid var(--color-success);
   background-color: var(--color-success-bg);
 }
+
+/* ===============================
+   6. Многостраничная навигация
+   =============================== */
+
+/* Хлебные крошки на внутренних страницах */
+.breadcrumbs {
+  max-width: var(--container-width);
+  margin: 0 auto var(--space-md);
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.breadcrumbs a {
+  color: var(--color-primary);
+}
+
+.breadcrumbs span::before {
+  content: " / ";
+  color: var(--color-muted);
+}
+
+/* Плавная прокрутка к якорям */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Подсветка раздела, к которому перешли по якорю */
+:target {
+  outline: 2px dashed var(--color-primary);
+  outline-offset: 4px;
+}
