@@ -2,7 +2,6 @@
    1. Переменные проекта
    =============================== */
 :root {
-  /* Основные цвета проекта */
   --color-bg: #ffffff;
   --color-text: #222222;
   --color-muted: #666666;
@@ -16,19 +15,16 @@
   --color-success-bg: #eefaf0;
   --color-white: #ffffff;
 
-  /* Отступы */
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
   --space-lg: 20px;
   --space-xl: 32px;
 
-  /* Скругления */
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
 
-  /* Размеры */
   --container-width: 1100px;
 }
 
@@ -122,21 +118,27 @@ a:focus-visible {
 }
 
 .site-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
   padding: 0;
   margin: var(--space-md) 0 0;
   list-style: none;
 }
 
-.site-nav__list li {
-  margin-bottom: var(--space-sm);
-}
-
 .site-nav__list a {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-md);
+  color: var(--color-primary);
   text-decoration: none;
+  border-radius: var(--radius-sm);
 }
 
 .site-nav__list a:hover {
-  text-decoration: underline;
+  color: var(--color-white);
+  background-color: var(--color-primary);
 }
 
 .hero {
@@ -157,11 +159,18 @@ a:focus-visible {
 }
 
 .product-card {
-  margin-bottom: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: 0;
   padding: var(--space-md);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background-color: var(--color-bg);
+}
+
+.product-card p {
+  margin: 0;
 }
 
 .product-card:hover {
@@ -170,6 +179,11 @@ a:focus-visible {
 
 .product-card h3 {
   margin-top: 0;
+}
+
+.product-card .button {
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .aside-info {
@@ -258,8 +272,6 @@ a:focus-visible {
 /* ===============================
    6. Многостраничная навигация
    =============================== */
-
-/* Хлебные крошки на внутренних страницах */
 .breadcrumbs {
   max-width: var(--container-width);
   margin: 0 auto var(--space-md);
@@ -276,19 +288,17 @@ a:focus-visible {
   color: var(--color-muted);
 }
 
-/* Плавная прокрутка к якорям */
 html {
   scroll-behavior: smooth;
 }
 
-/* Подсветка раздела, к которому перешли по якорю */
 :target {
   outline: 2px dashed var(--color-primary);
   outline-offset: 4px;
 }
 
 /* ===============================
-   7. Страница товара, каталог и позиционирование
+   7. Страница товара и позиционирование
    =============================== */
 .product-detail {
   display: flex;
@@ -363,61 +373,6 @@ html {
   background-color: var(--color-surface-accent);
 }
 
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: var(--space-lg);
-  align-items: start;
-}
-
-.catalog-filters {
-  position: sticky;
-  top: var(--space-lg);
-  padding: var(--space-md);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background-color: var(--color-surface);
-}
-
-.catalog-filters__title {
-  margin-top: 0;
-}
-
-.catalog-filters__group {
-  margin-bottom: var(--space-md);
-}
-
-.catalog-filters__label {
-  display: block;
-  margin-bottom: var(--space-xs);
-  font-weight: bold;
-}
-
-.catalog-filters__option {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-xs);
-  font-weight: normal;
-}
-
-.catalog-filters select {
-  width: 100%;
-  padding: var(--space-xs);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-}
-
-.catalog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: var(--space-md);
-}
-
-.catalog-grid .product-card {
-  margin-bottom: 0;
-}
-
 .back-to-top {
   position: fixed;
   right: var(--space-lg);
@@ -433,4 +388,69 @@ html {
 
 .back-to-top:hover {
   background-color: var(--color-primary-dark);
+}
+
+/* ===============================
+   8. Flexbox и Grid раскладка (Практика 6)
+   =============================== */
+.catalog-layout {
+  max-width: var(--container-width);
+  margin: 0 auto var(--space-xl);
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-areas: "filters products";
+  gap: var(--space-lg);
+}
+
+.catalog-filters {
+  grid-area: filters;
+  position: sticky;
+  top: var(--space-lg);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+}
+
+.catalog-filters__title {
+  margin-top: 0;
+}
+
+.catalog-products {
+  grid-area: products;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.filters-form {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.filters-form fieldset {
+  margin: 0;
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.filters-form legend {
+  font-weight: 700;
+}
+
+.filters-form label {
+  display: block;
+  margin-bottom: var(--space-sm);
+}
+
+.filters-form input[type="number"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
 }
