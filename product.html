@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Страница товара: подробное описание, характеристики и цена.">
+  <title>Товар 1 — Учебный интернет-магазин</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="site-header">
+      <a class="site-logo" href="index.html">ShopProject</a>
+      <nav class="site-nav" aria-label="Основная навигация">
+        <ul class="site-nav__list">
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="catalog.html">Каталог</a></li>
+          <li><a href="contacts.html">Контакты</a></li>
+          <li><a href="order.html">Оформить заявку</a></li>
+          <li><a href="index.html#advantages">Преимущества</a></li>
+          <li><a href="index.html#popular">Популярные товары</a></li>
+          <li><a href="index.html#contacts">Обратная связь</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="index.html">Главная</a>
+      <a href="catalog.html">Каталог</a>
+      <span>Товар 1</span>
+    </nav>
+
+    <section class="product-detail">
+      <div class="product-detail__media">
+        <img class="product-detail__image" src="https://placehold.co/500x350?text=Товар+1" alt="Товар 1">
+        <span class="product-detail__badge">Хит</span>
+      </div>
+
+      <div class="product-detail__info">
+        <h1 class="product-detail__title">Товар 1</h1>
+        <p class="product-detail__description">
+          Подробное описание учебного товара: для чего он нужен, какие у него
+          особенности и почему стоит выбрать именно эту модель.
+        </p>
+        <p class="product-detail__price">Цена: 1000 руб.</p>
+        <a class="button" href="order.html">Оформить заявку</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Характеристики</h2>
+      <table class="spec-table">
+        <caption>Характеристики товара 1</caption>
+        <thead>
+          <tr>
+            <th>Параметр</th>
+            <th>Значение</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Артикул</td>
+            <td>SP-001</td>
+          </tr>
+          <tr>
+            <td>Материал</td>
+            <td>Учебный образец</td>
+          </tr>
+          <tr>
+            <td>Гарантия</td>
+            <td>12 месяцев</td>
+          </tr>
+          <tr>
+            <td>Наличие</td>
+            <td>В наличии</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer id="contacts">
+    <p>&copy; 2026 Учебный проект. Все права защищены.</p>
+    <p>Дисциплина: Фронтенд и бэкенд разработка</p>
+  </footer>
+</body>
+</html>

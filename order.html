@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Оформление заявки на учебный интернет-магазин.">
+  <title>Оформление заявки — Учебный интернет-магазин</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="site-header">
+      <a class="site-logo" href="index.html">ShopProject</a>
+      <nav class="site-nav" aria-label="Основная навигация">
+        <ul class="site-nav__list">
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="catalog.html">Каталог</a></li>
+          <li><a href="contacts.html">Контакты</a></li>
+          <li><a href="order.html">Оформить заявку</a></li>
+          <li><a href="index.html#advantages">Преимущества</a></li>
+          <li><a href="index.html#popular">Популярные товары</a></li>
+          <li><a href="index.html#contacts">Обратная связь</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="index.html">Главная</a>
+      <span>Оформление заявки</span>
+    </nav>
+
+    <section class="section">
+      <h1>Оформление заявки</h1>
+      <p>Заполните форму ниже, и мы свяжемся с вами для уточнения деталей заказа.</p>
+
+      <form class="order-page-form" action="#" method="post">
+        <div class="form-field">
+          <label for="page-order-name">Имя</label>
+          <input id="page-order-name" name="name" type="text" placeholder="Введите ваше имя" minlength="2" autocomplete="given-name" required>
+        </div>
+
+        <div class="form-field">
+          <label for="page-order-email">E-mail</label>
+          <input id="page-order-email" name="email" type="email" placeholder="example@mail.ru" autocomplete="email" required>
+        </div>
+
+        <div class="form-field">
+          <label for="page-order-phone">Телефон</label>
+          <input id="page-order-phone" name="phone" type="tel" inputmode="tel" placeholder="+7 (900) 000-00-00" pattern="^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$" required>
+          <small>Формат: +7 (900) 000-00-00</small>
+        </div>
+
+        <div class="form-field">
+          <label for="page-order-product">Товар</label>
+          <select id="page-order-product" name="product" required>
+            <option value="">Выберите товар</option>
+            <option value="Товар 1">Товар 1</option>
+            <option value="Товар 2">Товар 2</option>
+            <option value="Товар 3">Товар 3</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="page-order-comment">Комментарий</label>
+          <textarea id="page-order-comment" name="comment" rows="4" placeholder="Укажите дополнительную информацию"></textarea>
+        </div>
+
+        <div class="form-field form-field--checkbox">
+          <label>
+            <input id="page-order-agreement" name="agreement" type="checkbox" required>
+            Я согласен на обработку данных
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="button">Отправить заявку</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer id="contacts">
+    <p>&copy; 2026 Учебный проект. Все права защищены.</p>
+    <p>Дисциплина: Фронтенд и бэкенд разработка</p>
+  </footer>
+</body>
+</html>
