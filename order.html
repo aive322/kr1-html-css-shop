@@ -33,32 +33,39 @@
 
     <section class="section">
       <h1>Оформление заявки</h1>
-      <p>Заполните форму ниже, и мы свяжемся с вами для уточнения деталей заказа.</p>
+      <p id="order-form-note">Заполните форму ниже, и мы свяжемся с вами для уточнения деталей заказа. Поля, отмеченные <span class="order-form__required" aria-hidden="true">*</span> (обязательные), нужно заполнить.</p>
 
-      <form class="order-form" action="#" method="post">
+      <div class="order-form__summary" id="order-form-summary" role="alert" tabindex="-1" hidden></div>
+
+      <form class="order-form" id="page-order-form" action="#" method="post" novalidate aria-describedby="order-form-note">
         <div class="order-form__field">
-          <label class="order-form__label" for="page-order-name">Имя</label>
+          <label class="order-form__label" for="page-order-name">Имя <span class="order-form__required" aria-hidden="true">*</span></label>
           <input class="order-form__input" id="page-order-name" name="name" type="text" placeholder="Введите ваше имя" minlength="2" autocomplete="given-name" required>
         </div>
 
         <div class="order-form__field">
-          <label class="order-form__label" for="page-order-email">E-mail</label>
+          <label class="order-form__label" for="page-order-email">E-mail <span class="order-form__required" aria-hidden="true">*</span></label>
           <input class="order-form__input" id="page-order-email" name="email" type="email" placeholder="example@mail.ru" autocomplete="email" required>
         </div>
 
         <div class="order-form__field">
-          <label class="order-form__label" for="page-order-phone">Телефон</label>
-          <input class="order-form__input" id="page-order-phone" name="phone" type="tel" inputmode="tel" placeholder="+7 (900) 000-00-00" pattern="^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$" required>
-          <small class="order-form__hint">Формат: +7 (900) 000-00-00</small>
+          <label class="order-form__label" for="page-order-phone">Телефон <span class="order-form__required" aria-hidden="true">*</span></label>
+          <input class="order-form__input" id="page-order-phone" name="phone" aria-describedby="page-order-phone-hint" type="tel" inputmode="tel" placeholder="+7 (900) 000-00-00" pattern="^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$" required>
+          <small class="order-form__hint" id="page-order-phone-hint">Формат: +7 (900) 000-00-00</small>
         </div>
 
         <div class="order-form__field">
-          <label class="order-form__label" for="page-order-product">Товар</label>
+          <label class="order-form__label" for="page-order-product">Товар <span class="order-form__required" aria-hidden="true">*</span></label>
           <select class="order-form__select" id="page-order-product" name="product" required>
             <option value="">Выберите товар</option>
-            <option value="Товар 1">Товар 1</option>
-            <option value="Товар 2">Товар 2</option>
-            <option value="Товар 3">Товар 3</option>
+            <option value="Беспроводная мышь Click Mini">Беспроводная мышь Click Mini</option>
+            <option value="Наушники Sound Plus">Наушники Sound Plus</option>
+            <option value="Power Bank 20000">Power Bank 20000</option>
+            <option value="Портативная колонка Boom">Портативная колонка Boom</option>
+            <option value="Клавиатура Type Pro">Клавиатура Type Pro</option>
+            <option value="Веб-камера Vision HD">Веб-камера Vision HD</option>
+            <option value="Умные часы Fit Band">Умные часы Fit Band</option>
+            <option value="Внешний SSD Fast 256">Внешний SSD Fast 256</option>
           </select>
         </div>
 
@@ -70,7 +77,7 @@
         <div class="order-form__field order-form__field--checkbox">
           <label class="order-form__label">
             <input class="order-form__input" id="page-order-agreement" name="agreement" type="checkbox" required>
-            Я согласен на обработку данных
+            Я согласен на обработку данных <span class="order-form__required" aria-hidden="true">*</span>
           </label>
         </div>
 
@@ -78,6 +85,8 @@
           <button class="button button--primary" type="submit">Отправить заявку</button>
         </div>
       </form>
+
+      <p class="success-message" id="page-order-success" role="status" hidden>Заявка отправлена. Мы свяжемся с вами в ближайшее время!</p>
     </section>
   </main>
 
@@ -85,5 +94,8 @@
     <p>&copy; 2026 Учебный проект. Все права защищены.</p>
     <p>Дисциплина: Фронтенд и бэкенд разработка</p>
   </footer>
+
+  <script src="js/order-form.js" defer></script>
+  <a class="back-to-top" href="#">Наверх ↑</a>
 </body>
-</html>
+</html>

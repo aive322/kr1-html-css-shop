@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Страница товара: подробное описание, характеристики и цена.">
-  <title>Товар 1 — ТехноМаркет</title>
+  <meta name="description" content="Беспроводная мышь Click Mini: описание, характеристики, цена и отзывы покупателей.">
+  <title>Беспроводная мышь Click Mini — ТехноМаркет</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/image-fallback.js" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -29,20 +30,19 @@
     <nav class="breadcrumbs" aria-label="Хлебные крошки">
       <a class="breadcrumbs__link" href="index.html">Главная</a>
       <a class="breadcrumbs__link" href="catalog.html">Каталог</a>
-      <span class="breadcrumbs__current">Товар 1</span>
+      <span class="breadcrumbs__current">Беспроводная мышь Click Mini</span>
     </nav>
 
     <section class="product-detail">
       <div class="product-detail__media">
-        <img class="product-detail__image" src="https://placehold.co/500x350?text=Товар+1" alt="Товар 1">
-        <span class="product-detail__badge">Хит</span>
+        <img class="product-detail__image" src="images/click-mini.svg" data-photo="images/photos/click-mini.jpg" alt="Беспроводная мышь Click Mini">
+        <span class="product-detail__badge product-detail__badge--featured">Хит</span>
       </div>
 
       <div class="product-detail__info">
-        <h1 class="product-detail__title">Товар 1</h1>
+        <h1 class="product-detail__title">Беспроводная мышь Click Mini</h1>
         <p class="product-detail__description">
-          Подробное описание учебного товара: для чего он нужен, какие у него
-          особенности и почему стоит выбрать именно эту модель.
+          Компактная беспроводная мышь для работы и учёбы: тихие клавиши, точный сенсор и до 12 месяцев работы от одной батарейки.
         </p>
         <p class="product-detail__price">Цена: 1000 руб.</p>
         <a class="button button--primary" href="order.html">Оформить заявку</a>
@@ -52,7 +52,7 @@
     <section class="section">
       <h2>Характеристики</h2>
       <table class="spec-table">
-        <caption>Характеристики товара 1</caption>
+        <caption>Характеристики: Беспроводная мышь Click Mini</caption>
         <thead>
           <tr>
             <th>Параметр</th>
@@ -65,8 +65,12 @@
             <td>SP-001</td>
           </tr>
           <tr>
-            <td>Материал</td>
-            <td>Учебный образец</td>
+            <td>Подключение</td>
+            <td>Bluetooth 5.0, USB-приёмник</td>
+          </tr>
+          <tr>
+            <td>Питание</td>
+            <td>1 батарейка AA</td>
           </tr>
           <tr>
             <td>Гарантия</td>
@@ -79,11 +83,122 @@
         </tbody>
       </table>
     </section>
+
+    <section class="section" id="compare">
+      <h2>Сравнение товаров</h2>
+      <div class="compare-table__wrap">
+        <table class="compare-table">
+          <caption class="compare-table__caption">Сравнение: Беспроводная мышь Click Mini, Наушники Sound Plus, Power Bank 20000</caption>
+          <thead>
+            <tr>
+              <th scope="col">Параметр</th>
+              <th scope="col" class="compare-table__current">Беспроводная мышь Click Mini</th>
+              <th scope="col">Наушники Sound Plus</th>
+              <th scope="col">Power Bank 20000</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Цена</th>
+              <td class="compare-table__current">1000 руб.</td>
+              <td>1500 руб.</td>
+              <td>2000 руб.</td>
+            </tr>
+            <tr>
+              <th scope="row">Артикул</th>
+              <td class="compare-table__current">SP-001</td>
+              <td>SP-002</td>
+              <td>SP-003</td>
+            </tr>
+            <tr>
+              <th scope="row">Гарантия</th>
+              <td class="compare-table__current">12 месяцев</td>
+              <td>12 месяцев</td>
+              <td>24 месяца</td>
+            </tr>
+            <tr>
+              <th scope="row">Наличие</th>
+              <td class="compare-table__current">В наличии</td>
+              <td>В наличии</td>
+              <td>В наличии</td>
+            </tr>
+            <tr>
+              <th scope="row">Метка</th>
+              <td class="compare-table__current">Хит</td>
+              <td>Новинка</td>
+              <td>−20%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section reviews" id="reviews" aria-labelledby="reviews-title">
+      <h2 id="reviews-title">Отзывы покупателей</h2>
+      <p class="reviews__summary">Средняя оценка: <strong>4,7 из 5</strong> (6 отзывов)</p>
+      <ul class="reviews__breakdown" aria-label="Распределение оценок">
+        <li class="reviews__breakdown-item">5 звёзд: 4</li>
+        <li class="reviews__breakdown-item">4 звезды: 2</li>
+        <li class="reviews__breakdown-item">3 звезды и ниже: 0</li>
+      </ul>
+      <div class="reviews__list">
+        <article class="review-card">
+          <header class="review-card__header">
+            <h3 class="review-card__author">Алексей М.</h3>
+            <p class="review-card__rating" aria-label="Оценка 5 из 5">★★★★★</p>
+          </header>
+          <p class="review-card__text">Мышь полностью соответствует описанию. Доставили на следующий день, упаковка целая. Подключилась к ноутбуку за пару секунд.</p>
+          <p class="review-card__date">12 октября 2026</p>
+        </article>
+        <article class="review-card">
+          <header class="review-card__header">
+            <h3 class="review-card__author">Марина К.</h3>
+            <p class="review-card__rating" aria-label="Оценка 5 из 5">★★★★★</p>
+          </header>
+          <p class="review-card__text">Пользуюсь уже месяц, вопросов к качеству нет. Клавиши действительно тихие, в офисе никто не жалуется. Цена приятно удивила.</p>
+          <p class="review-card__date">3 октября 2026</p>
+        </article>
+        <article class="review-card review-card--critical">
+          <header class="review-card__header">
+            <h3 class="review-card__author">Игорь С.</h3>
+            <p class="review-card__rating" aria-label="Оценка 4 из 5">★★★★☆</p>
+          </header>
+          <p class="review-card__text">В целом хороший товар, но хотелось бы более подробную инструкцию в комплекте. Пришлось искать настройки в интернете.</p>
+          <p class="review-card__date">27 сентября 2026</p>
+        </article>
+        <article class="review-card">
+          <header class="review-card__header">
+            <h3 class="review-card__author">Дарья П.</h3>
+            <p class="review-card__rating" aria-label="Оценка 5 из 5">★★★★★</p>
+          </header>
+          <p class="review-card__text">Взяла для учёбы, мышка маленькая и легко помещается в сумку. Батарейки хватает надолго, пока ни разу не меняла.</p>
+          <p class="review-card__date">21 сентября 2026</p>
+        </article>
+        <article class="review-card review-card--critical">
+          <header class="review-card__header">
+            <h3 class="review-card__author">Сергей В.</h3>
+            <p class="review-card__rating" aria-label="Оценка 4 из 5">★★★★☆</p>
+          </header>
+          <p class="review-card__text">Хорошая мышь за свои деньги. Немного маловата для большой руки, но для ноутбука подходит отлично.</p>
+          <p class="review-card__date">15 сентября 2026</p>
+        </article>
+        <article class="review-card">
+          <header class="review-card__header">
+            <h3 class="review-card__author">Елена Т.</h3>
+            <p class="review-card__rating" aria-label="Оценка 5 из 5">★★★★★</p>
+          </header>
+          <p class="review-card__text">Покупала в подарок сыну-студенту. Доволен: работает без задержек, USB-приёмник удобно хранится внутри корпуса.</p>
+          <p class="review-card__date">8 сентября 2026</p>
+        </article>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer" id="contacts">
     <p>&copy; 2026 Учебный проект. Все права защищены.</p>
     <p>Дисциплина: Фронтенд и бэкенд разработка</p>
   </footer>
+
+  <a class="back-to-top" href="#">Наверх ↑</a>
 </body>
 </html>
