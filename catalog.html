@@ -6,6 +6,8 @@
   <meta name="description" content="Каталог товаров учебного интернет-магазина.">
   <title>Каталог товаров - ТехноМаркет</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/image-fallback.js" defer></script>
+  <script src="js/card-states.js" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -65,22 +67,103 @@
         <h2>Список товаров</h2>
         <div class="products-grid">
           <article class="product-card product-card--featured">
-            <h3 class="product-card__title">Товар 1</h3>
-            <p class="product-card__description">Краткое описание учебного товара.</p>
+            <span class="product-card__badge product-card__badge--featured">Хит</span>
+            <img class="product-card__image" src="images/click-mini.svg" data-photo="images/photos/click-mini.jpg" alt="Беспроводная мышь Click Mini">
+            <h3 class="product-card__title">Беспроводная мышь Click Mini</h3>
+            <p class="product-card__description">Компактная беспроводная мышь с тихими клавишами.</p>
             <p class="product-card__price">Цена: 1000 руб.</p>
-            <a class="button button--secondary" href="product.html">Подробнее</a>
+            <div class="product-card__actions">
+              <a class="button button--secondary" href="product.html">Подробнее</a>
+              <button class="button button--toggle" type="button" aria-pressed="false" aria-label="Добавить в избранное: Беспроводная мышь Click Mini">☆</button>
+            </div>
           </article>
-          <article class="product-card">
-            <h3 class="product-card__title">Товар 2</h3>
-            <p class="product-card__description">Краткое описание учебного товара.</p>
+          <article class="product-card product-card--new">
+            <span class="product-card__badge product-card__badge--new">Новинка</span>
+            <img class="product-card__image" src="images/sound-plus.svg" data-photo="images/photos/sound-plus.jpg" alt="Наушники Sound Plus">
+            <h3 class="product-card__title">Наушники Sound Plus</h3>
+            <p class="product-card__description">Лёгкие беспроводные наушники с шумоподавлением.</p>
             <p class="product-card__price">Цена: 1500 руб.</p>
-            <a class="button button--secondary" href="product.html">Подробнее</a>
+            <div class="product-card__actions">
+              <a class="button button--secondary" href="product-2.html">Подробнее</a>
+              <button class="button button--toggle" type="button" aria-pressed="false" aria-label="Добавить в избранное: Наушники Sound Plus">☆</button>
+            </div>
           </article>
           <article class="product-card product-card--discount">
-            <h3 class="product-card__title">Товар 3</h3>
-            <p class="product-card__description">Краткое описание учебного товара.</p>
-            <p class="product-card__price">Цена: 2000 руб.</p>
-            <a class="button button--secondary" href="product.html">Подробнее</a>
+            <span class="product-card__badge product-card__badge--discount">−20%</span>
+            <img class="product-card__image" src="images/power-bank.svg" data-photo="images/photos/power-bank.jpg" alt="Power Bank 20000">
+            <h3 class="product-card__title">Power Bank 20000</h3>
+            <p class="product-card__description">Внешний аккумулятор на 20 000 мА·ч с быстрой зарядкой.</p>
+            <p class="product-card__price">Цена: <s class="product-card__old-price">2500 руб.</s> 2000 руб.</p>
+            <div class="product-card__actions">
+              <a class="button button--secondary" href="product-3.html">Подробнее</a>
+              <button class="button button--toggle" type="button" aria-pressed="false" aria-label="Добавить в избранное: Power Bank 20000">☆</button>
+            </div>
+          </article>
+          <article class="product-card">
+            <img class="product-card__image" src="images/boom-speaker.svg" data-photo="images/photos/boom-speaker.jpg" alt="Портативная колонка Boom">
+            <h3 class="product-card__title">Портативная колонка Boom</h3>
+            <p class="product-card__description">Влагозащищённая колонка с насыщенным звуком.</p>
+            <p class="product-card__price">Цена: 2500 руб.</p>
+            <div class="product-card__actions">
+              <a class="button button--secondary" href="product-4.html">Подробнее</a>
+              <button class="button button--toggle" type="button" aria-pressed="false" aria-label="Добавить в избранное: Портативная колонка Boom">☆</button>
+            </div>
+          </article>
+          <article class="product-card product-card--featured">
+            <span class="product-card__badge product-card__badge--featured">Хит</span>
+            <img class="product-card__image" src="images/type-pro.svg" data-photo="images/photos/type-pro.jpg" alt="Клавиатура Type Pro">
+            <h3 class="product-card__title">Клавиатура Type Pro</h3>
+            <p class="product-card__description">Механическая клавиатура с подсветкой клавиш.</p>
+            <p class="product-card__price">Цена: 3000 руб.</p>
+            <div class="product-card__actions">
+              <a class="button button--secondary" href="product-5.html">Подробнее</a>
+              <button class="button button--toggle" type="button" aria-pressed="false" aria-label="Добавить в избранное: Клавиатура Type Pro">☆</button>
+            </div>
+          </article>
+          <article class="product-card product-card--discount">
+            <span class="product-card__badge product-card__badge--discount">−10%</span>
+            <img class="product-card__image" src="images/vision-hd.svg" data-photo="images/photos/vision-hd.jpg" alt="Веб-камера Vision HD">
+            <h3 class="product-card__title">Веб-камера Vision HD</h3>
+            <p class="product-card__description">Веб-камера Full HD с автофокусом и микрофоном.</p>
+            <p class="product-card__price">Цена: <s class="product-card__old-price">3900 руб.</s> 3500 руб.</p>
+            <div class="product-card__actions">
+              <a class="button button--secondary" href="product-6.html">Подробнее</a>
+              <button class="button button--toggle" type="button" aria-pressed="false" aria-label="Добавить в избранное: Веб-камера Vision HD">☆</button>
+            </div>
+          </article>
+          <article class="product-card product-card--new">
+            <span class="product-card__badge product-card__badge--new">Новинка</span>
+            <img class="product-card__image" src="images/fit-band.svg" data-photo="images/photos/fit-band.jpg" alt="Умные часы Fit Band">
+            <h3 class="product-card__title">Умные часы Fit Band</h3>
+            <p class="product-card__description">Умные часы с пульсометром и датчиком сна.</p>
+            <p class="product-card__price">Цена: 4000 руб.</p>
+            <div class="product-card__actions">
+              <a class="button button--secondary" href="product-7.html">Подробнее</a>
+              <button class="button button--toggle" type="button" aria-pressed="false" aria-label="Добавить в избранное: Умные часы Fit Band">☆</button>
+            </div>
+          </article>
+          <article class="product-card product-card--discount">
+            <span class="product-card__badge product-card__badge--discount">−25%</span>
+            <img class="product-card__image" src="images/fast-ssd.svg" data-photo="images/photos/fast-ssd.jpg" alt="Внешний SSD Fast 256">
+            <h3 class="product-card__title">Внешний SSD Fast 256</h3>
+            <p class="product-card__description">Быстрый внешний накопитель на 256 ГБ.</p>
+            <p class="product-card__price">Цена: <s class="product-card__old-price">6000 руб.</s> 4500 руб.</p>
+            <div class="product-card__actions">
+              <a class="button button--secondary" href="product-8.html">Подробнее</a>
+              <button class="button button--toggle" type="button" aria-pressed="false" aria-label="Добавить в избранное: Внешний SSD Fast 256">☆</button>
+            </div>
+          </article>
+          <article class="product-card product-card--sold-out">
+            <span class="product-card__badge product-card__badge--sold-out">Нет в наличии</span>
+            <img class="product-card__image" src="images/tab-10.svg" data-photo="images/photos/tab-10.jpg" alt="Планшет Tab 10">
+            <h3 class="product-card__title">Планшет Tab 10</h3>
+            <p class="product-card__description">Планшет с 10-дюймовым экраном для учёбы и работы.</p>
+            <p class="product-card__price">Цена: 5000 руб.</p>
+            <div class="product-card__actions">
+              <a class="button button--secondary" href="product-9.html">Подробнее</a>
+              <button class="button button--primary" type="button" disabled>Нет в наличии</button>
+              <button class="button button--toggle" type="button" aria-pressed="false" aria-label="Добавить в избранное: Планшет Tab 10">☆</button>
+            </div>
           </article>
         </div>
       </section>
@@ -94,4 +177,4 @@
 
   <a class="back-to-top" href="#">Наверх ↑</a>
 </body>
-</html>
+</html>
