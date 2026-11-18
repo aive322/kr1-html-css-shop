@@ -5,16 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Каталог товаров учебного интернет-магазина.">
   <title>Каталог товаров - ТехноМаркет</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/image-fallback.js" defer></script>
-  <script src="js/card-states.js" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/responsive.css?v=1">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="js/responsive.js?v=1" defer></script>
+  <script src="js/image-fallback.js?v=3" defer></script>
+  <script src="js/card-states.js?v=3" defer></script>
 </head>
 <body>
   <header class="site-header">
     <div class="site-header__inner">
       <a class="site-header__logo" href="index.html">ТехноМаркет</a>
+      <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list">
+        <span class="site-nav__toggle-icon" aria-hidden="true"></span>
+        <span class="site-nav__toggle-text">Меню</span>
+      </button>
       <nav class="site-nav" aria-label="Основная навигация">
-        <ul class="site-nav__list">
+        <ul class="site-nav__list" id="site-nav-list">
           <li class="site-nav__item"><a class="site-nav__link" href="index.html">Главная</a></li>
           <li class="site-nav__item"><a class="site-nav__link site-nav__link--active" href="catalog.html">Каталог</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="contacts.html">Контакты</a></li>
@@ -44,23 +51,25 @@
 
     <section class="catalog-layout">
       <aside class="catalog-filters" aria-label="Фильтры">
-        <h3 class="catalog-filters__title">Фильтры</h3>
-        <form class="filters-form" action="#" method="get">
-          <fieldset>
-            <legend>Категория</legend>
-            <label><input type="checkbox" name="category" value="all"> Все товары</label>
-            <label><input type="checkbox" name="category" value="popular"> Популярные</label>
-            <label><input type="checkbox" name="category" value="new"> Новинки</label>
-          </fieldset>
-          <fieldset>
-            <legend>Цена</legend>
-            <label for="price-from">От</label>
-            <input id="price-from" name="price-from" type="number" min="0" placeholder="0">
-            <label for="price-to">До</label>
-            <input id="price-to" name="price-to" type="number" min="0" placeholder="5000">
-          </fieldset>
-          <button class="button button--primary" type="submit">Применить</button>
-        </form>
+        <details class="catalog-filters__details" id="filters-details" open>
+          <summary class="catalog-filters__summary"><h3 class="catalog-filters__title">Фильтры</h3></summary>
+          <form class="filters-form" action="#" method="get">
+            <fieldset>
+              <legend>Категория</legend>
+              <label><input type="checkbox" name="category" value="all"> Все товары</label>
+              <label><input type="checkbox" name="category" value="popular"> Популярные</label>
+              <label><input type="checkbox" name="category" value="new"> Новинки</label>
+            </fieldset>
+            <fieldset>
+              <legend>Цена</legend>
+              <label for="price-from">От</label>
+              <input id="price-from" name="price-from" type="number" min="0" placeholder="0">
+              <label for="price-to">До</label>
+              <input id="price-to" name="price-to" type="number" min="0" placeholder="5000">
+            </fieldset>
+            <button class="button button--primary" type="submit">Применить</button>
+          </form>
+        </details>
       </aside>
 
       <section class="catalog-products">
@@ -68,7 +77,10 @@
         <div class="products-grid">
           <article class="product-card product-card--featured">
             <span class="product-card__badge product-card__badge--featured">Хит</span>
-            <img class="product-card__image" src="images/click-mini.svg" data-photo="images/photos/click-mini.jpg" alt="Беспроводная мышь Click Mini">
+            <picture>
+              <source type="image/webp" srcset="images/photos/click-mini-320.webp 320w, images/photos/click-mini.webp 554w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw">
+              <img class="product-card__image" src="images/photos/click-mini.jpg" srcset="images/photos/click-mini-320.jpg 320w, images/photos/click-mini.jpg 554w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw" width="554" height="554" loading="lazy" decoding="async" data-fallback="images/click-mini.svg" alt="Беспроводная мышь Click Mini">
+            </picture>
             <h3 class="product-card__title">Беспроводная мышь Click Mini</h3>
             <p class="product-card__description">Компактная беспроводная мышь с тихими клавишами.</p>
             <p class="product-card__price">Цена: 1000 руб.</p>
@@ -79,7 +91,10 @@
           </article>
           <article class="product-card product-card--new">
             <span class="product-card__badge product-card__badge--new">Новинка</span>
-            <img class="product-card__image" src="images/sound-plus.svg" data-photo="images/photos/sound-plus.jpg" alt="Наушники Sound Plus">
+            <picture>
+              <source type="image/webp" srcset="images/photos/sound-plus-320.webp 320w, images/photos/sound-plus.webp 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw">
+              <img class="product-card__image" src="images/photos/sound-plus.jpg" srcset="images/photos/sound-plus-320.jpg 320w, images/photos/sound-plus.jpg 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw" width="447" height="447" loading="lazy" decoding="async" data-fallback="images/sound-plus.svg" alt="Наушники Sound Plus">
+            </picture>
             <h3 class="product-card__title">Наушники Sound Plus</h3>
             <p class="product-card__description">Лёгкие беспроводные наушники с шумоподавлением.</p>
             <p class="product-card__price">Цена: 1500 руб.</p>
@@ -90,7 +105,10 @@
           </article>
           <article class="product-card product-card--discount">
             <span class="product-card__badge product-card__badge--discount">−20%</span>
-            <img class="product-card__image" src="images/power-bank.svg" data-photo="images/photos/power-bank.jpg" alt="Power Bank 20000">
+            <picture>
+              <source type="image/webp" srcset="images/photos/power-bank-320.webp 320w, images/photos/power-bank.webp 515w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw">
+              <img class="product-card__image" src="images/photos/power-bank.jpg" srcset="images/photos/power-bank-320.jpg 320w, images/photos/power-bank.jpg 515w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw" width="515" height="388" loading="lazy" decoding="async" data-fallback="images/power-bank.svg" alt="Power Bank 20000">
+            </picture>
             <h3 class="product-card__title">Power Bank 20000</h3>
             <p class="product-card__description">Внешний аккумулятор на 20 000 мА·ч с быстрой зарядкой.</p>
             <p class="product-card__price">Цена: <s class="product-card__old-price">2500 руб.</s> 2000 руб.</p>
@@ -100,7 +118,10 @@
             </div>
           </article>
           <article class="product-card">
-            <img class="product-card__image" src="images/boom-speaker.svg" data-photo="images/photos/boom-speaker.jpg" alt="Портативная колонка Boom">
+            <picture>
+              <source type="image/webp" srcset="images/photos/boom-speaker-320.webp 320w, images/photos/boom-speaker.webp 563w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw">
+              <img class="product-card__image" src="images/photos/boom-speaker.jpg" srcset="images/photos/boom-speaker-320.jpg 320w, images/photos/boom-speaker.jpg 563w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw" width="563" height="355" loading="lazy" decoding="async" data-fallback="images/boom-speaker.svg" alt="Портативная колонка Boom">
+            </picture>
             <h3 class="product-card__title">Портативная колонка Boom</h3>
             <p class="product-card__description">Влагозащищённая колонка с насыщенным звуком.</p>
             <p class="product-card__price">Цена: 2500 руб.</p>
@@ -111,7 +132,10 @@
           </article>
           <article class="product-card product-card--featured">
             <span class="product-card__badge product-card__badge--featured">Хит</span>
-            <img class="product-card__image" src="images/type-pro.svg" data-photo="images/photos/type-pro.jpg" alt="Клавиатура Type Pro">
+            <picture>
+              <source type="image/webp" srcset="images/photos/type-pro-320.webp 320w, images/photos/type-pro.webp 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw">
+              <img class="product-card__image" src="images/photos/type-pro.jpg" srcset="images/photos/type-pro-320.jpg 320w, images/photos/type-pro.jpg 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw" width="447" height="447" loading="lazy" decoding="async" data-fallback="images/type-pro.svg" alt="Клавиатура Type Pro">
+            </picture>
             <h3 class="product-card__title">Клавиатура Type Pro</h3>
             <p class="product-card__description">Механическая клавиатура с подсветкой клавиш.</p>
             <p class="product-card__price">Цена: 3000 руб.</p>
@@ -122,7 +146,10 @@
           </article>
           <article class="product-card product-card--discount">
             <span class="product-card__badge product-card__badge--discount">−10%</span>
-            <img class="product-card__image" src="images/vision-hd.svg" data-photo="images/photos/vision-hd.jpg" alt="Веб-камера Vision HD">
+            <picture>
+              <source type="image/webp" srcset="images/photos/vision-hd-320.webp 320w, images/photos/vision-hd.webp 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw">
+              <img class="product-card__image" src="images/photos/vision-hd.jpg" srcset="images/photos/vision-hd-320.jpg 320w, images/photos/vision-hd.jpg 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw" width="447" height="447" loading="lazy" decoding="async" data-fallback="images/vision-hd.svg" alt="Веб-камера Vision HD">
+            </picture>
             <h3 class="product-card__title">Веб-камера Vision HD</h3>
             <p class="product-card__description">Веб-камера Full HD с автофокусом и микрофоном.</p>
             <p class="product-card__price">Цена: <s class="product-card__old-price">3900 руб.</s> 3500 руб.</p>
@@ -133,7 +160,10 @@
           </article>
           <article class="product-card product-card--new">
             <span class="product-card__badge product-card__badge--new">Новинка</span>
-            <img class="product-card__image" src="images/fit-band.svg" data-photo="images/photos/fit-band.jpg" alt="Умные часы Fit Band">
+            <picture>
+              <source type="image/webp" srcset="images/photos/fit-band-320.webp 320w, images/photos/fit-band.webp 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw">
+              <img class="product-card__image" src="images/photos/fit-band.jpg" srcset="images/photos/fit-band-320.jpg 320w, images/photos/fit-band.jpg 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw" width="447" height="447" loading="lazy" decoding="async" data-fallback="images/fit-band.svg" alt="Умные часы Fit Band">
+            </picture>
             <h3 class="product-card__title">Умные часы Fit Band</h3>
             <p class="product-card__description">Умные часы с пульсометром и датчиком сна.</p>
             <p class="product-card__price">Цена: 4000 руб.</p>
@@ -144,7 +174,10 @@
           </article>
           <article class="product-card product-card--discount">
             <span class="product-card__badge product-card__badge--discount">−25%</span>
-            <img class="product-card__image" src="images/fast-ssd.svg" data-photo="images/photos/fast-ssd.jpg" alt="Внешний SSD Fast 256">
+            <picture>
+              <source type="image/webp" srcset="images/photos/fast-ssd-320.webp 320w, images/photos/fast-ssd.webp 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw">
+              <img class="product-card__image" src="images/photos/fast-ssd.jpg" srcset="images/photos/fast-ssd-320.jpg 320w, images/photos/fast-ssd.jpg 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw" width="447" height="447" loading="lazy" decoding="async" data-fallback="images/fast-ssd.svg" alt="Внешний SSD Fast 256">
+            </picture>
             <h3 class="product-card__title">Внешний SSD Fast 256</h3>
             <p class="product-card__description">Быстрый внешний накопитель на 256 ГБ.</p>
             <p class="product-card__price">Цена: <s class="product-card__old-price">6000 руб.</s> 4500 руб.</p>
@@ -155,7 +188,10 @@
           </article>
           <article class="product-card product-card--sold-out">
             <span class="product-card__badge product-card__badge--sold-out">Нет в наличии</span>
-            <img class="product-card__image" src="images/tab-10.svg" data-photo="images/photos/tab-10.jpg" alt="Планшет Tab 10">
+            <picture>
+              <source type="image/webp" srcset="images/photos/tab-10-320.webp 320w, images/photos/tab-10.webp 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw">
+              <img class="product-card__image" src="images/photos/tab-10.jpg" srcset="images/photos/tab-10-320.jpg 320w, images/photos/tab-10.jpg 447w" sizes="(min-width: 1100px) 260px, (min-width: 640px) 45vw, 92vw" width="447" height="447" loading="lazy" decoding="async" data-fallback="images/tab-10.svg" alt="Планшет Tab 10">
+            </picture>
             <h3 class="product-card__title">Планшет Tab 10</h3>
             <p class="product-card__description">Планшет с 10-дюймовым экраном для учёбы и работы.</p>
             <p class="product-card__price">Цена: 5000 руб.</p>

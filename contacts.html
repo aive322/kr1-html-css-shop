@@ -5,14 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Контактная информация учебного интернет-магазина.">
   <title>Контакты — ТехноМаркет</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/responsive.css?v=1">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="js/responsive.js?v=1" defer></script>
 </head>
 <body>
   <header class="site-header">
     <div class="site-header__inner">
       <a class="site-header__logo" href="index.html">ТехноМаркет</a>
+      <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list">
+        <span class="site-nav__toggle-icon" aria-hidden="true"></span>
+        <span class="site-nav__toggle-text">Меню</span>
+      </button>
       <nav class="site-nav" aria-label="Основная навигация">
-        <ul class="site-nav__list">
+        <ul class="site-nav__list" id="site-nav-list">
           <li class="site-nav__item"><a class="site-nav__link" href="index.html">Главная</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="catalog.html">Каталог</a></li>
           <li class="site-nav__item"><a class="site-nav__link site-nav__link--active" href="contacts.html">Контакты</a></li>

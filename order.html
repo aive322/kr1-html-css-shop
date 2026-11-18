@@ -5,14 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Оформление заявки на учебный интернет-магазин.">
   <title>Оформление заявки — ТехноМаркет</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/responsive.css?v=1">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="js/responsive.js?v=1" defer></script>
 </head>
 <body>
   <header class="site-header">
     <div class="site-header__inner">
       <a class="site-header__logo" href="index.html">ТехноМаркет</a>
+      <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list">
+        <span class="site-nav__toggle-icon" aria-hidden="true"></span>
+        <span class="site-nav__toggle-text">Меню</span>
+      </button>
       <nav class="site-nav" aria-label="Основная навигация">
-        <ul class="site-nav__list">
+        <ul class="site-nav__list" id="site-nav-list">
           <li class="site-nav__item"><a class="site-nav__link" href="index.html">Главная</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="catalog.html">Каталог</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="contacts.html">Контакты</a></li>
@@ -37,7 +44,7 @@
 
       <div class="order-form__summary" id="order-form-summary" role="alert" tabindex="-1" hidden></div>
 
-      <form class="order-form" id="page-order-form" action="#" method="post" novalidate aria-describedby="order-form-note">
+      <form class="order-form order-form--page" id="page-order-form" action="#" method="post" novalidate aria-describedby="order-form-note">
         <div class="order-form__field">
           <label class="order-form__label" for="page-order-name">Имя <span class="order-form__required" aria-hidden="true">*</span></label>
           <input class="order-form__input" id="page-order-name" name="name" type="text" placeholder="Введите ваше имя" minlength="2" autocomplete="given-name" required>
@@ -69,12 +76,12 @@
           </select>
         </div>
 
-        <div class="order-form__field">
+        <div class="order-form__field order-form__field--wide">
           <label class="order-form__label" for="page-order-comment">Комментарий</label>
           <textarea class="order-form__textarea" id="page-order-comment" name="comment" rows="4" placeholder="Укажите дополнительную информацию"></textarea>
         </div>
 
-        <div class="order-form__field order-form__field--checkbox">
+        <div class="order-form__field order-form__field--checkbox order-form__field--wide">
           <label class="order-form__label">
             <input class="order-form__input" id="page-order-agreement" name="agreement" type="checkbox" required>
             Я согласен на обработку данных <span class="order-form__required" aria-hidden="true">*</span>

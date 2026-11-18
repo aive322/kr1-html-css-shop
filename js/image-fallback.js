@@ -1,12 +1,28 @@
-// Фотографии товаров лежат в папке images/photos/ (адрес в атрибуте data-photo).
-// В src каждой картинки указана запасная иллюстрация из images/, поэтому
-// изображение видно всегда. Фото подставляется, когда файл успешно загрузился.
-document.querySelectorAll('img[data-photo]').forEach((image) => {
-  const loader = new Image();
+// Фотографии товаров лежат в папке images/photos/ (в нескольких размерах и форматах).
+// Если фотография не загрузилась, подставляется запасная иллюстрация из images/
+// (адрес указан в атрибуте data-fallback), поэтому картинка видна всегда.
+function useFallback(image) {
+  const fallback = image.dataset.fallback;
 
-  loader.addEventListener('load', () => {
-    image.src = loader.src;
-  });
+  if (!fallback || image.dataset.fallbackUsed) {
+    return;
+  }
 
-  loader.src = image.dataset.photo;
+  image.dataset.fallbackUsed = 'true';
+  // Убираем srcset и родительский picture-источник, иначе браузер снова выберет фото.
+  image.removeAttribute('srcset');
+  const picture = image.closest('picture');
+  if (picture) {
+    picture.querySelectorAll('source').forEach((source) => source.remove());
+  }
+  image.src = fallback;
+}
+
+document.querySelectorAll('img[data-fallback]').forEach((image) => {
+  image.addEventListener('error', () => useFallback(image));
+
+  // Ошибка могла произойти до того, как скрипт начал работу.
+  if (image.complete && image.naturalWidth === 0) {
+    useFallback(image);
+  }
 });
