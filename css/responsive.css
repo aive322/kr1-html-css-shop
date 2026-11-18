@@ -8,7 +8,7 @@
   Контрольные точки:
     480px  – большой телефон
     640px  – маленький планшет (две колонки карточек)
-    768px  – планшет (двухколоночная форма заявки)
+    768px  – планшет (двухколоночная форма заявки, таблица сравнения в виде таблицы)
     1024px – ноутбук (три колонки карточек, боковой фильтр)
     1100px – широкий ноутбук (меню в одну строку, закреплённая шапка)
 */
@@ -435,6 +435,16 @@ html {
     justify-self: start;
   }
 
+  .product-detail__info,
+  .product-detail__media {
+    flex-basis: 320px;
+  }
+}
+
+/* ===============================
+   13. Планшет: от 768px
+   =============================== */
+@media (min-width: 768px) {
   /* Таблица сравнения снова обычная таблица */
   .compare-table {
     display: table;
@@ -482,16 +492,12 @@ html {
     content: none;
   }
 
-  .product-detail__info,
-  .product-detail__media {
-    flex-basis: 320px;
+  /* На планшете ячейки компактнее, чтобы таблица помещалась без прокрутки */
+  .compare-table th,
+  .compare-table td {
+    padding: var(--space-sm) 10px;
   }
-}
 
-/* ===============================
-   13. Планшет: от 768px
-   =============================== */
-@media (min-width: 768px) {
   main {
     padding: var(--space-lg);
   }
@@ -534,6 +540,11 @@ html {
    14. Компьютер: от 1024px
    =============================== */
 @media (min-width: 1024px) {
+  .compare-table th,
+  .compare-table td {
+    padding: var(--space-sm) var(--space-md);
+  }
+
   .products-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
