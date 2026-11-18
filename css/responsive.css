@@ -231,6 +231,9 @@ html {
 .catalog-filters__title {
   display: inline;
   margin: 0;
+  /* Заголовок h2 (порядок заголовков для A11y), размер как у прежнего h3 */
+  font-size: 1.17em;
+  line-height: 1.3;
 }
 
 .catalog-filters__details[open] .catalog-filters__summary {
