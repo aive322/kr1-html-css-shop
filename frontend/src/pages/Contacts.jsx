@@ -11,9 +11,10 @@ import { formatPrice } from '../utils/price.js';
 const contacts = [
   { icon: 'bi-telephone', title: 'Телефон в Москве', value: company.phone.text, href: company.phone.href, note: company.hours },
   { icon: 'bi-headset', title: 'Горячая линия', value: company.hotline.text, href: company.hotline.href, note: 'Бесплатно по России, круглосуточно' },
-  { icon: 'bi-envelope', title: 'Почта', value: company.email.text, href: company.email.href, note: 'Отвечаем в течение часа' },
-  { icon: 'bi-telegram', title: 'Telegram', value: '@tehnomarket_help', href: 'https://t.me/', note: 'Чат с консультантом' }
+  { icon: 'bi-envelope', title: 'Почта', value: company.email.text, href: company.email.href, note: 'Отвечаем в течение часа' }
 ];
+
+const mapQuery = encodeURIComponent('метро Электрозаводская, Москва');
 
 const delivery = [
   { icon: 'bi-truck', title: 'Курьером по Москве', text: `На следующий день, с 10:00 до 22:00. ${formatPrice(DELIVERY_PRICE)}, от ${formatPrice(FREE_DELIVERY_FROM)} — бесплатно.` },
@@ -113,7 +114,7 @@ export default function Contacts() {
         <div className="container">
           <div className="row g-4">
             {contacts.map((item, index) => (
-              <Reveal className="col-12 col-sm-6 col-lg-3" key={item.title} delay={index * 80}>
+              <Reveal className="col-12 col-sm-6 col-lg-4" key={item.title} delay={index * 80}>
                 <div className="feature contact-card h-100">
                   <span className="feature__icon" aria-hidden="true"><i className={`bi ${item.icon}`}></i></span>
                   <h2 className="feature__title">{item.title}</h2>
@@ -139,38 +140,20 @@ export default function Contacts() {
                     {pickupSchedule.map(([day, time]) => <tr key={day}><th scope="row">{day}</th><td>{time}</td></tr>)}
                   </tbody>
                 </table>
-                <h3 className="h6 mt-4">Как добраться</h3>
-                <ul className="route-list">
-                  <li><i className="bi bi-train-front" aria-hidden="true"></i>От метро «Электрозаводская» — 5 минут пешком, выход № 2</li>
-                  <li><i className="bi bi-bus-front" aria-hidden="true"></i>Остановка «ТЦ Сигнал» — автобусы 32, 78, 552</li>
-                  <li><i className="bi bi-p-square" aria-hidden="true"></i>Бесплатная парковка для покупателей — 2 часа</li>
-                </ul>
+                <p className="mt-4 mb-2">Адрес самовывоза указан для учебного проекта. На карте отмечено метро «Электрозаводская».</p>
+                <a href={`https://yandex.ru/maps/?text=${mapQuery}`} target="_blank" rel="noopener noreferrer">
+                  Открыть в Яндекс Картах
+                </a>
               </div>
             </Reveal>
             <Reveal className="col-lg-7" delay={120} variant="zoom">
-              <div className="map-card h-100" role="img" aria-label="Схема проезда: магазин в ТЦ «Сигнал», рядом метро «Электрозаводская»">
-                <svg viewBox="0 0 600 380" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                  <rect width="600" height="380" className="map-bg" />
-                  <path d="M0 250 L600 210" className="map-road map-road--main" />
-                  <path d="M180 0 L230 380" className="map-road" />
-                  <path d="M420 0 L390 380" className="map-road" />
-                  <path d="M0 90 L600 120" className="map-road" />
-                  <path d="M60 330 Q 300 280 600 330" className="map-river" />
-                  <rect x="250" y="130" width="120" height="70" rx="10" className="map-block" />
-                  <rect x="40" y="130" width="110" height="80" rx="10" className="map-block map-block--park" />
-                  <rect x="450" y="20" width="120" height="70" rx="10" className="map-block" />
-                  <circle cx="205" cy="240" r="14" className="map-metro" />
-                  <text x="205" y="245" textAnchor="middle" className="map-metro-text">М</text>
-                  <path d="M215 232 L300 175" className="map-route" />
-                  <g className="map-pin">
-                    <path d="M310 168c0-16 12-28 28-28s28 12 28 28c0 22-28 46-28 46s-28-24-28-46z" />
-                    <circle cx="338" cy="168" r="10" fill="#fff" />
-                  </g>
-                </svg>
-                <div className="map-card__label">
-                  <strong>ТЦ «Сигнал», 1 этаж</strong>
-                  <span>Вход с ул. Электронной</span>
-                </div>
+              <div className="map-card h-100">
+                <iframe
+                  title="Яндекс Карты — метро «Электрозаводская»"
+                  src={`https://yandex.ru/map-widget/v1/?mode=search&text=${mapQuery}&z=16`}
+                  loading="lazy"
+                  allowFullScreen
+                />
               </div>
             </Reveal>
           </div>

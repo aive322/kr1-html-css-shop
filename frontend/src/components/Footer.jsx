@@ -90,24 +90,20 @@ export default function Footer() {
             <h2 className="site-footer__title">Связаться</h2>
             <ul className="list-unstyled site-footer__links site-footer__contacts">
               <li>
-                <i className="bi bi-telephone" aria-hidden="true"></i>
-                <span><a href={company.phone.href} className="text-nowrap">{company.phone.text}</a><small>по Москве</small></span>
-              </li>
-              <li>
-                <i className="bi bi-headset" aria-hidden="true"></i>
-                <span><a href={company.hotline.href} className="text-nowrap">{company.hotline.text}</a><small>бесплатно по России</small></span>
-              </li>
-              <li>
-                <i className="bi bi-envelope" aria-hidden="true"></i>
-                <a href={company.email.href}>{company.email.text}</a>
-              </li>
-              <li>
                 <i className="bi bi-geo-alt" aria-hidden="true"></i>
                 <span>{company.address}</span>
               </li>
               <li>
+                <i className="bi bi-telephone" aria-hidden="true"></i>
+                <span><a href={company.phone.href} className="text-nowrap">{company.phone.text}</a><small>по Москве</small></span>
+              </li>
+              <li>
                 <i className="bi bi-clock" aria-hidden="true"></i>
                 <span>{company.hours}</span>
+              </li>
+              <li>
+                <i className="bi bi-envelope" aria-hidden="true"></i>
+                <a href={company.email.href}>{company.email.text}</a>
               </li>
             </ul>
           </div>

@@ -16,11 +16,10 @@ export default function BackToTop() {
     <button
       type="button"
       className={`to-top ${visible ? 'is-visible' : ''}`}
-      aria-label="Наверх"
       tabIndex={visible ? 0 : -1}
       onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' })}
     >
-      <i className="bi bi-arrow-up" aria-hidden="true"></i>
+      Наверх
     </button>
   );
 }
