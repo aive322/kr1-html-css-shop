@@ -160,4 +160,4 @@ Vite перенаправляет запросы `/api` на Go-сервер.
 | Экшн-камера Action 4K | [GoPro Hero 9 Black - Front 2.jpg](https://commons.wikimedia.org/wiki/File:GoPro_Hero_9_Black_-_Front_2.jpg) | Greyfiveys | CC BY-SA 4.0 |
 | Графический планшет Pen Pad | [Wacom Pen-tablet without mouse.jpg](https://commons.wikimedia.org/wiki/File:Wacom_Pen-tablet_without_mouse.jpg) | Tobias Rütten, Metoc (производная работа) | CC BY-SA 2.5 |
 
-Названия товаров, цены, характеристики и отзывы в магазине учебные и не относятся к производителям на фото.
+Названия товаров, цены, характеристики и отзывы в магазине учебные и не относятся к производителям на фото
