@@ -10,8 +10,17 @@
     <meta property="og:title" content="ТехноМаркет — гаджеты и аксессуары" />
     <meta property="og:description" content="Каталог гаджетов с ценами, скидками и отзывами покупателей." />
     <link rel="icon" type="image/svg+xml" href="/kr1-html-css-shop/favicon.svg" />
-    <script type="module" crossorigin src="/kr1-html-css-shop/assets/index-CE_yUMlH.js"></script>
-    <link rel="stylesheet" crossorigin href="/kr1-html-css-shop/assets/index-CdBW-_fV.css">
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      /* Тема ставится до загрузки React, чтобы страница не «мигала» светлой. */
+      try {
+        var t = localStorage.getItem('tm-theme');
+        if (t !== 'dark' && t !== 'light') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-bs-theme', t);
+      } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="/kr1-html-css-shop/assets/app.js"></script>
+    <link rel="stylesheet" crossorigin href="/kr1-html-css-shop/assets/index.css">
   </head>
   <body>
     <div id="root"></div>

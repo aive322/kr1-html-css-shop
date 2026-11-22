@@ -10,6 +10,15 @@
     <meta property="og:title" content="ТехноМаркет — гаджеты и аксессуары" />
     <meta property="og:description" content="Каталог гаджетов с ценами, скидками и отзывами покупателей." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      /* Тема ставится до загрузки React, чтобы страница не «мигала» светлой. */
+      try {
+        var t = localStorage.getItem('tm-theme');
+        if (t !== 'dark' && t !== 'light') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-bs-theme', t);
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

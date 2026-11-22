@@ -1,60 +1,62 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useProducts } from '../context/ProductsContext.jsx';
+import { useCart } from '../context/CartContext.jsx';
+import { useAccount } from '../context/AccountContext.jsx';
 import usePageMeta from '../hooks/usePageMeta.js';
 import PageHeader from '../components/PageHeader.jsx';
 import ProductImage from '../components/ProductImage.jsx';
 import LoadState from '../components/LoadState.jsx';
-import { formatPrice } from '../utils/price.js';
+import { formatPrice, pluralize } from '../utils/price.js';
+import { company, DELIVERY_PRICE, FREE_DELIVERY_FROM } from '../data/company.js';
 
-const empty = { name: '', phone: '', email: '', product: '', quantity: 1, delivery: 'courier', comment: '', agreement: false };
-const DELIVERY_PRICE = 300;
+const PHONE_RE = /^\+?[78][\s(-]*\d{3}[\s)-]*\d{3}[\s-]*\d{2}[\s-]*\d{2}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const payments = [
+  { value: 'card', icon: 'bi-credit-card', title: 'Картой при получении', text: 'Курьеру или на кассе' },
+  { value: 'sbp', icon: 'bi-qr-code', title: 'СБП при получении', text: 'Оплата по QR-коду' },
+  { value: 'cash', icon: 'bi-cash-coin', title: 'Наличными', text: 'Курьеру или на кассе' }
+];
 
 // Проверка полей формы. Возвращает объект { поле: текст ошибки }.
 function validate(values) {
   const errors = {};
   if (values.name.trim().length < 2) errors.name = 'Введите имя — не короче 2 символов.';
-  if (!/^\+?[78][\s(-]*\d{3}[\s)-]*\d{3}[\s-]*\d{2}[\s-]*\d{2}$/.test(values.phone.trim())) errors.phone = 'Введите телефон в формате +7 (900) 000-00-00.';
-  if (values.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) errors.email = 'Проверьте адрес e-mail, например name@example.com.';
-  if (!values.product) errors.product = 'Выберите товар.';
-  if (!(values.quantity >= 1 && values.quantity <= 10)) errors.quantity = 'Количество — от 1 до 10.';
+  if (!PHONE_RE.test(values.phone.trim())) errors.phone = 'Введите телефон в формате +7 (900) 000-00-00.';
+  if (!EMAIL_RE.test(values.email.trim())) errors.email = 'Введите почту, например name@mail.ru — на неё придёт подтверждение.';
+  if (values.delivery === 'courier' && values.address.trim().length < 8) errors.address = 'Укажите адрес: улицу, дом и квартиру.';
   if (!values.agreement) errors.agreement = 'Нужно согласие на обработку данных.';
   return errors;
 }
 
 export default function Order() {
-  usePageMeta('Оформить заявку', 'Оформление заявки на покупку гаджета в интернет-магазине ТехноМаркет: выберите товар, количество и способ доставки.');
-  const { products, status } = useProducts();
-  const [searchParams] = useSearchParams();
-  const [values, setValues] = useState(empty);
+  usePageMeta('Оформление заказа', 'Оформление заказа в интернет-магазине ТехноМаркет: контакты, доставка курьером или самовывоз, оплата при получении.');
+  const { status } = useProducts();
+  const { lines, totals, clear } = useCart();
+  const { user, addOrder } = useAccount();
+  const [values, setValues] = useState(() => ({
+    name: user?.name ?? '', phone: user?.phone ?? '', email: user?.email ?? '',
+    delivery: 'courier', address: user?.address ?? '', payment: 'card', comment: '', agreement: false
+  }));
   const [errors, setErrors] = useState({});
   const [sent, setSent] = useState(null);
   const formRef = useRef(null);
   const successRef = useRef(null);
 
-  const available = products.filter((p) => p.isAvailable);
-
-  // Товар можно передать в адресе: /order?product=3
   useEffect(() => {
-    const id = searchParams.get('product');
-    if (id && available.some((p) => String(p.id) === id)) {
-      setValues((v) => ({ ...v, product: id }));
+    if (sent) {
+      window.scrollTo(0, 0);
+      successRef.current?.focus({ preventScroll: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, status]);
-
-  useEffect(() => {
-    if (sent) successRef.current?.focus();
   }, [sent]);
 
-  const selected = available.find((p) => String(p.id) === values.product);
-  const subtotal = selected ? selected.price * values.quantity : 0;
-  const delivery = values.delivery === 'courier' && selected ? DELIVERY_PRICE : 0;
-  const total = subtotal + delivery;
+  const delivery = values.delivery === 'courier' ? totals.delivery : 0;
+  const total = totals.subtotal + delivery;
 
   const change = (event) => {
     const { name, value, type, checked } = event.target;
-    const next = { ...values, [name]: type === 'checkbox' ? checked : name === 'quantity' ? Number(value) : value };
+    const next = { ...values, [name]: type === 'checkbox' ? checked : value };
     setValues(next);
     if (errors[name]) setErrors(validate(next));
   };
@@ -68,8 +70,20 @@ export default function Order() {
       formRef.current?.querySelector(`[name="${firstError}"]`)?.focus();
       return;
     }
-    setSent({ name: values.name.trim(), product: selected.title, total });
-    setValues(empty);
+    const order = addOrder({
+      items: lines.map(({ product, qty }) => ({ id: product.id, title: product.title, price: product.price, qty })),
+      count: totals.count,
+      subtotal: totals.subtotal,
+      delivery,
+      total,
+      deliveryType: values.delivery,
+      address: values.delivery === 'courier' ? values.address.trim() : company.address,
+      payment: payments.find((p) => p.value === values.payment).title,
+      contact: { name: values.name.trim(), phone: values.phone.trim(), email: values.email.trim() },
+      comment: values.comment.trim()
+    });
+    setSent(order);
+    clear();
   };
 
   const field = (name) => ({
@@ -81,27 +95,60 @@ export default function Order() {
   const error = (name) => errors[name] && <div className="invalid-feedback d-block" id={`order-${name}-error`}>{errors[name]}</div>;
   const invalid = (name) => (errors[name] ? ' is-invalid' : '');
 
-  const summaryText = useMemo(() => (selected ? `${selected.title} × ${values.quantity}` : 'Товар не выбран'), [selected, values.quantity]);
+  if (sent) {
+    return (
+      <>
+        <PageHeader title="Заказ оформлен" crumbs={[{ to: '/cart', label: 'Корзина' }]} />
+        <section className="section pt-4">
+          <div className="container">
+            <div className="order-done pop-in" role="status" tabIndex={-1} ref={successRef}>
+              <span className="order-done__icon" aria-hidden="true"><i className="bi bi-check-lg"></i></span>
+              <h2 className="h3">Спасибо, {sent.contact.name}!</h2>
+              <p className="order-done__number">Заказ № {sent.id}</p>
+              <p>
+                {sent.count} {pluralize(sent.count, 'товар', 'товара', 'товаров')} на сумму <strong>{formatPrice(sent.total)}</strong>.
+                {' '}Менеджер позвонит на номер {sent.contact.phone} в течение 15 минут, чтобы подтвердить заказ.
+                {' '}{sent.deliveryType === 'courier' ? `Доставим по адресу: ${sent.address}.` : `Забрать заказ можно по адресу: ${company.address}.`}
+              </p>
+              <div className="d-flex flex-wrap justify-content-center gap-2">
+                {user
+                  ? <Link className="btn btn-primary" to="/account">Мои заказы</Link>
+                  : <Link className="btn btn-primary" to="/account">Создать кабинет и следить за заказом</Link>}
+                <Link className="btn btn-outline-primary" to="/catalog">Продолжить покупки</Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
 
   return (
     <>
-      <PageHeader title="Оформить заявку" subtitle="Заполните форму — менеджер свяжется с вами для подтверждения заказа" />
+      <PageHeader title="Оформление заказа" crumbs={[{ to: '/cart', label: 'Корзина' }]} subtitle="Проверьте данные — менеджер позвонит для подтверждения" />
       <section className="section pt-4">
         <div className="container">
           <LoadState />
-          {sent && (
-            <div className="alert alert-success order-success" role="status" tabIndex={-1} ref={successRef}>
-              <h2 className="h5"><i className="bi bi-check-circle-fill me-2" aria-hidden="true"></i>Заявка принята</h2>
-              <p className="mb-2">{sent.name}, спасибо! Заявка на «{sent.product}» на сумму {formatPrice(sent.total)} сформирована. В учебной версии сайта данные никуда не отправляются.</p>
-              <Link to="/catalog" className="alert-link">Вернуться в каталог</Link>
+          {status === 'ready' && lines.length === 0 && (
+            <div className="empty-state pop-in">
+              <i className="bi bi-bag" aria-hidden="true"></i>
+              <h2 className="h5">Корзина пуста</h2>
+              <p>Добавьте товары, чтобы оформить заказ.</p>
+              <Link className="btn btn-primary" to="/catalog">Перейти в каталог</Link>
             </div>
           )}
 
-          {status === 'ready' && (
+          {status === 'ready' && lines.length > 0 && (
             <div className="row g-4">
               <div className="col-lg-8">
-                <form ref={formRef} className="form-card" noValidate onSubmit={submit} aria-labelledby="form-title">
-                  <h2 id="form-title" className="h4 mb-4">Контактные данные</h2>
+                <form ref={formRef} className="form-card anim-fade-up" noValidate onSubmit={submit} aria-labelledby="form-title">
+                  {!user && (
+                    <p className="login-hint">
+                      <i className="bi bi-person-circle" aria-hidden="true"></i>
+                      <span>Уже покупали у нас? <Link to="/account">Войдите</Link> — данные подставятся сами, а заказ сохранится в кабинете.</span>
+                    </p>
+                  )}
+                  <h2 id="form-title" className="h4 mb-2">1. Получатель</h2>
                   <p className="form-text mb-4">Поля, отмеченные <span className="text-danger" aria-hidden="true">*</span><span className="visually-hidden">звёздочкой</span>, обязательны.</p>
                   <div className="row g-3">
                     <div className="col-md-6">
@@ -115,72 +162,86 @@ export default function Order() {
                       {error('phone')}
                     </div>
                     <div className="col-12">
-                      <label className="form-label" htmlFor="order-email">E-mail</label>
-                      <input {...field('email')} type="email" className={`form-control${invalid('email')}`} autoComplete="email" placeholder="name@example.com" value={values.email} onChange={change} />
+                      <label className="form-label" htmlFor="order-email">Электронная почта <span className="text-danger" aria-hidden="true">*</span></label>
+                      <input {...field('email')} type="email" className={`form-control${invalid('email')}`} autoComplete="email" placeholder="name@mail.ru" value={values.email} onChange={change} required />
                       {error('email')}
                     </div>
                   </div>
 
-                  <h2 className="h4 mt-5 mb-4">Заказ</h2>
-                  <div className="row g-3">
-                    <div className="col-md-8">
-                      <label className="form-label" htmlFor="order-product">Товар <span className="text-danger" aria-hidden="true">*</span></label>
-                      <select {...field('product')} className={`form-select${invalid('product')}`} value={values.product} onChange={change} required>
-                        <option value="">Выберите товар</option>
-                        {available.map((p) => <option key={p.id} value={String(p.id)}>{p.title} — {formatPrice(p.price)}</option>)}
-                      </select>
-                      {error('product')}
+                  <fieldset className="mt-5">
+                    <legend className="h4 mb-3">2. Способ получения</legend>
+                    <div className="delivery-options">
+                      <label className={`delivery-option ${values.delivery === 'courier' ? 'is-active' : ''}`}>
+                        <input type="radio" name="delivery" value="courier" className="form-check-input" checked={values.delivery === 'courier'} onChange={change} />
+                        <span><strong>Курьером</strong><small>1–2 дня · {totals.delivery ? formatPrice(DELIVERY_PRICE) : 'бесплатно'}</small></span>
+                      </label>
+                      <label className={`delivery-option ${values.delivery === 'pickup' ? 'is-active' : ''}`}>
+                        <input type="radio" name="delivery" value="pickup" className="form-check-input" checked={values.delivery === 'pickup'} onChange={change} />
+                        <span><strong>Самовывоз</strong><small>Завтра · бесплатно</small></span>
+                      </label>
                     </div>
-                    <div className="col-md-4">
-                      <label className="form-label" htmlFor="order-quantity">Количество</label>
-                      <input {...field('quantity')} type="number" min="1" max="10" className={`form-control${invalid('quantity')}`} value={values.quantity} onChange={change} />
-                      {error('quantity')}
+                  </fieldset>
+                  {values.delivery === 'courier' ? (
+                    <div className="mt-3 anim-fade-up" key="courier">
+                      <label className="form-label" htmlFor="order-address">Адрес доставки <span className="text-danger" aria-hidden="true">*</span></label>
+                      <input {...field('address')} type="text" className={`form-control${invalid('address')}`} autoComplete="street-address" placeholder="Город, улица, дом, квартира" value={values.address} onChange={change} />
+                      {error('address')}
+                      {totals.delivery > 0 && <p className="form-text">Бесплатная доставка — при заказе от {formatPrice(FREE_DELIVERY_FROM)}.</p>}
                     </div>
-                    <fieldset className="col-12">
-                      <legend className="form-label fs-6">Способ получения</legend>
-                      <div className="delivery-options">
-                        <label className={`delivery-option ${values.delivery === 'courier' ? 'is-active' : ''}`}>
-                          <input type="radio" name="delivery" value="courier" className="form-check-input" checked={values.delivery === 'courier'} onChange={change} />
-                          <span><strong>Курьер</strong><small>1–2 дня, {formatPrice(DELIVERY_PRICE)}</small></span>
+                  ) : (
+                    <p className="pickup-note mt-3 anim-fade-up" key="pickup">
+                      <i className="bi bi-shop" aria-hidden="true"></i>
+                      <span><strong>{company.address}</strong><br />{company.hours}. Заказ хранится 7 дней.</span>
+                    </p>
+                  )}
+
+                  <fieldset className="mt-5">
+                    <legend className="h4 mb-3">3. Оплата</legend>
+                    <div className="delivery-options delivery-options--3">
+                      {payments.map((p) => (
+                        <label key={p.value} className={`delivery-option ${values.payment === p.value ? 'is-active' : ''}`}>
+                          <input type="radio" name="payment" value={p.value} className="form-check-input" checked={values.payment === p.value} onChange={change} />
+                          <span><strong><i className={`bi ${p.icon} me-1`} aria-hidden="true"></i>{p.title}</strong><small>{p.text}</small></span>
                         </label>
-                        <label className={`delivery-option ${values.delivery === 'pickup' ? 'is-active' : ''}`}>
-                          <input type="radio" name="delivery" value="pickup" className="form-check-input" checked={values.delivery === 'pickup'} onChange={change} />
-                          <span><strong>Самовывоз</strong><small>Бесплатно, завтра</small></span>
-                        </label>
-                      </div>
-                    </fieldset>
-                    <div className="col-12">
-                      <label className="form-label" htmlFor="order-comment">Комментарий</label>
-                      <textarea {...field('comment')} className="form-control" rows="3" placeholder="Удобное время звонка, адрес доставки" value={values.comment} onChange={change}></textarea>
+                      ))}
                     </div>
-                    <div className="col-12">
-                      <div className="form-check">
-                        <input {...field('agreement')} type="checkbox" className={`form-check-input${invalid('agreement')}`} checked={values.agreement} onChange={change} required />
-                        <label className="form-check-label" htmlFor="order-agreement">Я согласен на обработку персональных данных <span className="text-danger" aria-hidden="true">*</span></label>
-                        {error('agreement')}
-                      </div>
-                    </div>
+                  </fieldset>
+
+                  <div className="mt-4">
+                    <label className="form-label" htmlFor="order-comment">Комментарий к заказу</label>
+                    <textarea {...field('comment')} className="form-control" rows="3" placeholder="Удобное время доставки, код домофона" value={values.comment} onChange={change}></textarea>
                   </div>
-                  <button type="submit" className="btn btn-primary btn-lg mt-4 w-100 w-md-auto">Отправить заявку</button>
+                  <div className="form-check mt-3">
+                    <input {...field('agreement')} type="checkbox" className={`form-check-input${invalid('agreement')}`} checked={values.agreement} onChange={change} required />
+                    <label className="form-check-label" htmlFor="order-agreement">Согласен на обработку персональных данных и с <Link to="/contacts#privacy">политикой конфиденциальности</Link> <span className="text-danger" aria-hidden="true">*</span></label>
+                    {error('agreement')}
+                  </div>
+                  <button type="submit" className="btn btn-primary btn-lg mt-4 w-100 w-md-auto">Подтвердить заказ на {formatPrice(total)}</button>
                 </form>
               </div>
 
               <div className="col-lg-4">
-                <aside className="summary" aria-labelledby="summary-title">
-                  <h2 id="summary-title" className="h5">Ваш заказ</h2>
-                  {selected && (
-                    <div className="summary__product">
-                      <ProductImage product={selected} sizes="80px" className="summary__image" />
-                      <div>
-                        <p className="summary__name">{selected.title}</p>
-                        <p className="summary__price">{formatPrice(selected.price)}</p>
-                      </div>
-                    </div>
-                  )}
+                <aside className="summary summary--sticky anim-fade-up anim-delay-1" aria-labelledby="summary-title">
+                  <div className="d-flex justify-content-between align-items-baseline">
+                    <h2 id="summary-title" className="h5">Ваш заказ</h2>
+                    <Link to="/cart" className="small">Изменить</Link>
+                  </div>
+                  <ul className="list-unstyled summary__items">
+                    {lines.map(({ product, qty }) => (
+                      <li className="summary__product" key={product.id}>
+                        <ProductImage product={product} sizes="56px" className="summary__image" alt="" />
+                        <div>
+                          <p className="summary__name">{product.title}</p>
+                          <p className="summary__price">{qty} × {formatPrice(product.price)}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                   <dl className="summary__rows">
-                    <div><dt>{summaryText}</dt><dd>{formatPrice(subtotal)}</dd></div>
+                    <div><dt>Товары ({totals.count})</dt><dd>{formatPrice(totals.subtotal)}</dd></div>
+                    {totals.savings > 0 && <div className="summary__savings"><dt>Ваша выгода</dt><dd>{formatPrice(totals.savings)}</dd></div>}
                     <div><dt>Доставка</dt><dd>{delivery ? formatPrice(delivery) : 'Бесплатно'}</dd></div>
-                    <div className="summary__total"><dt>Итого</dt><dd>{formatPrice(total)}</dd></div>
+                    <div className="summary__total"><dt>Итого</dt><dd key={total} className="value-flash">{formatPrice(total)}</dd></div>
                   </dl>
                 </aside>
               </div>

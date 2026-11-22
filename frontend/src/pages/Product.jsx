@@ -1,4 +1,9 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useCart } from '../context/CartContext.jsx';
+import { useAccount } from '../context/AccountContext.jsx';
+import { useToast } from '../context/ToastContext.jsx';
+import QtyStepper from '../components/QtyStepper.jsx';
 import { useProducts } from '../context/ProductsContext.jsx';
 import usePageMeta from '../hooks/usePageMeta.js';
 import PageHeader from '../components/PageHeader.jsx';
@@ -9,13 +14,86 @@ import ProductCard from '../components/ProductCard.jsx';
 import Rating from '../components/Rating.jsx';
 import LoadState from '../components/LoadState.jsx';
 import NotFound from './NotFound.jsx';
+import Reveal from '../components/Reveal.jsx';
 import { calculateDiscountPercent, formatPrice, getProductStatus, pluralize } from '../utils/price.js';
 
 const specValue = (product, name) => product.specs.find(([key]) => key === name)?.[1] ?? '—';
 
+// Блок покупки: количество и кнопка «В корзину».
+function BuyBox({ product }) {
+  const { add, has, MAX_QTY } = useCart();
+  const [qty, setQty] = useState(1);
+  if (!product.isAvailable) {
+    return <Link className="btn btn-outline-primary btn-lg" to="/catalog">Выбрать другой товар</Link>;
+  }
+  return (
+    <>
+      <QtyStepper value={qty} max={MAX_QTY} onChange={setQty} />
+      <button type="button" className="btn btn-primary btn-lg" onClick={() => add(product, qty)}>
+        <i className="bi bi-bag-plus me-2" aria-hidden="true"></i>В корзину
+      </button>
+      {has(product.id) && <Link className="btn btn-outline-primary btn-lg pop-in" to="/cart">Перейти в корзину</Link>}
+    </>
+  );
+}
+
+// Форма отзыва. Оставить отзыв может только вошедший покупатель.
+function ReviewForm({ product }) {
+  const { user, addReview } = useAccount();
+  const toast = useToast();
+  const [rating, setRating] = useState(0);
+  const [text, setText] = useState('');
+  const [errors, setErrors] = useState({});
+
+  if (!user) {
+    return (
+      <div className="review-form review-form--guest">
+        <i className="bi bi-chat-square-text" aria-hidden="true"></i>
+        <p className="mb-0">Купили этот товар? <Link to="/account">Войдите в кабинет</Link>, чтобы оставить отзыв.</p>
+      </div>
+    );
+  }
+
+  const submit = (e) => {
+    e.preventDefault();
+    const er = {};
+    if (!rating) er.rating = 'Поставьте оценку от 1 до 5.';
+    if (text.trim().length < 10) er.text = 'Напишите хотя бы пару предложений (от 10 символов).';
+    setErrors(er);
+    if (Object.keys(er).length) return;
+    addReview({ productId: product.id, author: user.name, rating, text: text.trim() });
+    setRating(0);
+    setText('');
+    toast('Спасибо! Отзыв опубликован', 'bi-chat-square-heart-fill');
+  };
+
+  return (
+    <form className="review-form" onSubmit={submit} noValidate>
+      <h3 className="h5">Оставить отзыв</h3>
+      <fieldset className="mb-3">
+        <legend className="form-label fs-6">Ваша оценка</legend>
+        <div className="star-input">
+          {[5, 4, 3, 2, 1].map((n) => (
+            <span key={n}>
+              <input type="radio" id={`star-${n}`} name="rating" value={n} checked={rating === n} onChange={() => { setRating(n); setErrors((er) => ({ ...er, rating: undefined })); }} />
+              <label htmlFor={`star-${n}`} title={`${n} из 5`}><i className="bi bi-star-fill" aria-hidden="true"></i><span className="visually-hidden">{n} из 5</span></label>
+            </span>
+          ))}
+        </div>
+        {errors.rating && <div className="invalid-feedback d-block">{errors.rating}</div>}
+      </fieldset>
+      <label className="form-label" htmlFor="review-text">Отзыв</label>
+      <textarea id="review-text" className={`form-control ${errors.text ? 'is-invalid' : ''}`} rows="3" placeholder="Что понравилось, что нет, как пользуетесь" value={text} onChange={(e) => { setText(e.target.value); setErrors((er) => ({ ...er, text: undefined })); }} aria-invalid={errors.text ? true : undefined} aria-describedby={errors.text ? 'review-text-error' : undefined}></textarea>
+      {errors.text && <div className="invalid-feedback d-block" id="review-text-error">{errors.text}</div>}
+      <button type="submit" className="btn btn-primary mt-3">Опубликовать</button>
+    </form>
+  );
+}
+
 export default function Product() {
   const { id } = useParams();
   const { products, status } = useProducts();
+  const { reviews: userReviews } = useAccount();
   const product = products.find((p) => String(p.id) === id);
 
   usePageMeta(product?.title ?? 'Товар', product ? `${product.title} — ${product.description} Цена ${formatPrice(product.price)}.` : undefined);
@@ -28,9 +106,17 @@ export default function Product() {
   }
 
   const discount = calculateDiscountPercent(product.oldPrice, product.price);
-  const compared = [product, ...products.filter((p) => p.id !== product.id && p.isAvailable).slice(0, 2)];
-  const similar = products.filter((p) => p.id !== product.id).slice(0, 3);
-  const stars = [5, 4, 3, 2, 1].map((n) => ({ n, count: product.reviews.filter((r) => r.rating === n).length }));
+  // Похожие товары — ближайшие по цене.
+  const byPrice = products
+    .filter((p) => p.id !== product.id)
+    .sort((a, b) => Math.abs(a.price - product.price) - Math.abs(b.price - product.price));
+  const compared = [product, ...byPrice.filter((p) => p.isAvailable).slice(0, 2)];
+  const similar = byPrice.slice(0, 3);
+  // Отзывы покупателей с сайта показываем первыми.
+  const ownReviews = userReviews.filter((r) => r.productId === product.id);
+  const allReviews = [...ownReviews, ...product.reviews];
+  const reviewsTotal = product.reviewsCount + ownReviews.length;
+  const stars = [5, 4, 3, 2, 1].map((n) => ({ n, count: allReviews.filter((r) => r.rating === n).length }));
 
   return (
     <>
@@ -40,13 +126,13 @@ export default function Product() {
         <div className="container">
           <div className="row g-4 g-lg-5 align-items-start">
             <div className="col-lg-6">
-              <div className="product-gallery">
+              <div className="product-gallery anim-zoom-in">
                 <ProductImage product={product} sizes="(min-width: 1200px) 540px, (min-width: 992px) 45vw, 92vw" className="product-gallery__image" eager />
                 <ProductBadge product={product} className="product-gallery__badge" />
               </div>
             </div>
             <div className="col-lg-6">
-              <div className="product-info">
+              <div className="product-info anim-fade-up">
                 <Rating value={product.rating} count={product.reviewsCount} />
                 <p className="product-info__lead">{product.description}</p>
                 <div className="product-info__price">
@@ -62,14 +148,8 @@ export default function Product() {
                   <i className={`bi ${product.isAvailable ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-2`} aria-hidden="true"></i>
                   {getProductStatus(product)}
                 </p>
-                <div className="d-flex flex-wrap gap-2 mb-4">
-                  {product.isAvailable ? (
-                    <Link className="btn btn-primary btn-lg" to={`/order?product=${product.id}`}>
-                      <i className="bi bi-bag-plus me-2" aria-hidden="true"></i>Оформить заявку
-                    </Link>
-                  ) : (
-                    <Link className="btn btn-outline-primary btn-lg" to="/catalog">Выбрать другой товар</Link>
-                  )}
+                <div className="buy-box">
+                  <BuyBox product={product} key={product.id} />
                   <FavoriteButton product={product} className="favorite-btn--lg" />
                 </div>
                 <ul className="perks">
@@ -82,7 +162,7 @@ export default function Product() {
           </div>
 
           <div className="row g-4 mt-2">
-            <div className="col-lg-6">
+            <Reveal className="col-lg-6">
               <h2 className="section-title h3">Характеристики</h2>
               <div className="table-responsive card-table">
                 <table className="table mb-0">
@@ -94,10 +174,10 @@ export default function Product() {
                   </tbody>
                 </table>
               </div>
-            </div>
-            <div className="col-lg-6">
+            </Reveal>
+            <Reveal className="col-lg-6" delay={100}>
               <h2 className="section-title h3">Сравнение</h2>
-              <div className="table-responsive card-table">
+              <div className="table-responsive card-table" tabIndex={0} role="region" aria-label="Таблица сравнения, прокручивается по горизонтали">
                 <table className="table compare mb-0">
                   <caption className="visually-hidden">Сравнение товара {product.title} с похожими товарами</caption>
                   <thead>
@@ -114,7 +194,7 @@ export default function Product() {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -123,25 +203,25 @@ export default function Product() {
         <div className="container">
           <h2 id="reviews-title" className="section-title">Отзывы покупателей</h2>
           <div className="row g-4">
-            <div className="col-lg-4">
+            <Reveal className="col-lg-4">
               <div className="rating-summary">
                 <p className="rating-summary__value">{String(product.rating).replace('.', ',')}<span> из 5</span></p>
-                <p className="rating-summary__count">{product.reviewsCount} {pluralize(product.reviewsCount, 'отзыв', 'отзыва', 'отзывов')}</p>
+                <p className="rating-summary__count">{reviewsTotal} {pluralize(reviewsTotal, 'отзыв', 'отзыва', 'отзывов')}</p>
                 <ul className="list-unstyled mb-0">
                   {stars.map(({ n, count }) => (
                     <li className="rating-bar" key={n}>
                       <span className="rating-bar__label">{n} <i className="bi bi-star-fill" aria-hidden="true"></i><span className="visually-hidden"> звёзд:</span></span>
-                      <span className="rating-bar__track" aria-hidden="true"><span style={{ width: `${(count / product.reviewsCount) * 100}%` }}></span></span>
+                      <span className="rating-bar__track" aria-hidden="true"><span style={{ width: `${(count / allReviews.length) * 100}%` }}></span></span>
                       <span className="rating-bar__count">{count}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-            </div>
+            </Reveal>
             <div className="col-lg-8">
               <div className="row g-3">
-                {product.reviews.map((review) => (
-                  <div className="col-md-6" key={review.author}>
+                {allReviews.map((review, index) => (
+                  <Reveal className="col-md-6" key={review.id ?? review.author} delay={Math.min(index, 3) * 80}>
                     <article className="review h-100">
                       <header className="d-flex justify-content-between align-items-start gap-2">
                         <h3 className="review__author">{review.author}</h3>
@@ -152,8 +232,11 @@ export default function Product() {
                       <p className="review__text">{review.text}</p>
                       <p className="review__date">{review.date}</p>
                     </article>
-                  </div>
+                  </Reveal>
                 ))}
+              </div>
+              <div className="mt-4">
+                <ReviewForm product={product} key={product.id} />
               </div>
             </div>
           </div>
@@ -164,8 +247,8 @@ export default function Product() {
         <div className="container">
           <h2 id="similar-title" className="section-title">Похожие товары</h2>
           <div className="row g-4 mt-1">
-            {similar.map((p) => (
-              <div className="col-12 col-sm-6 col-lg-4" key={p.id}><ProductCard product={p} /></div>
+            {similar.map((p, index) => (
+              <Reveal className="col-12 col-sm-6 col-lg-4" key={p.id} delay={index * 80}><ProductCard product={p} /></Reveal>
             ))}
           </div>
         </div>

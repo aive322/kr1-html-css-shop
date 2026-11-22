@@ -4,6 +4,8 @@ import usePageMeta from '../hooks/usePageMeta.js';
 import ProductCard from '../components/ProductCard.jsx';
 import ProductImage from '../components/ProductImage.jsx';
 import LoadState from '../components/LoadState.jsx';
+import Reveal from '../components/Reveal.jsx';
+import CountUp from '../components/CountUp.jsx';
 import { pluralize } from '../utils/price.js';
 
 const advantages = [
@@ -28,7 +30,7 @@ export default function Home() {
     .slice(0, 3)
     .map(({ product, review }) => ({ ...review, product }));
   const reviewsTotal = products.reduce((sum, p) => sum + p.reviewsCount, 0);
-  const avgRating = ready ? (products.reduce((sum, p) => sum + p.rating * p.reviewsCount, 0) / reviewsTotal).toFixed(1).replace('.', ',') : '—';
+  const avgRating = ready ? products.reduce((sum, p) => sum + p.rating * p.reviewsCount, 0) / reviewsTotal : 0;
   const inStock = products.filter((p) => p.isAvailable).length;
 
   return (
@@ -42,7 +44,7 @@ export default function Home() {
               <p className="hero__lead">Беспроводные мыши и наушники, клавиатуры, внешние аккумуляторы и умные часы. Честные цены, скидки и отзывы реальных покупателей.</p>
               <div className="d-flex flex-wrap gap-3">
                 <Link className="btn btn-accent btn-lg" to="/catalog">Перейти в каталог <i className="bi bi-arrow-right ms-1" aria-hidden="true"></i></Link>
-                <Link className="btn btn-outline-light btn-lg" to="/order">Оформить заявку</Link>
+                <Link className="btn btn-outline-light btn-lg" to="/about">О магазине</Link>
               </div>
             </div>
             <div className="col-lg-6">
@@ -61,27 +63,27 @@ export default function Home() {
 
       <div className="container">
         <dl className="stats">
-          <div className="stats__item"><dt>Товаров в каталоге</dt><dd>{ready ? products.length : '—'}</dd></div>
-          <div className="stats__item"><dt>В наличии</dt><dd>{ready ? `${inStock} из ${products.length}` : '—'}</dd></div>
-          <div className="stats__item"><dt>Отзывов покупателей</dt><dd>{ready ? reviewsTotal : '—'}</dd></div>
-          <div className="stats__item"><dt>Средняя оценка</dt><dd>{avgRating}</dd></div>
+          <div className="stats__item"><dt>Товаров в каталоге</dt><dd>{ready ? <CountUp value={products.length} /> : '—'}</dd></div>
+          <div className="stats__item"><dt>В наличии</dt><dd>{ready ? <CountUp value={inStock} format={(n) => `${n} из ${products.length}`} /> : '—'}</dd></div>
+          <div className="stats__item"><dt>Отзывов покупателей</dt><dd>{ready ? <CountUp value={reviewsTotal} /> : '—'}</dd></div>
+          <div className="stats__item"><dt>Средняя оценка</dt><dd>{ready ? <CountUp value={avgRating} decimals={1} /> : '—'}</dd></div>
         </dl>
       </div>
 
       <section className="section" aria-labelledby="popular-title">
         <div className="container">
-          <div className="section-head">
+          <Reveal className="section-head">
             <div>
               <h2 id="popular-title" className="section-title">Популярные товары</h2>
               <p className="section-subtitle">Хиты продаж и новинки этого сезона</p>
             </div>
             <Link className="btn btn-outline-primary" to="/catalog">Весь каталог <i className="bi bi-arrow-right ms-1" aria-hidden="true"></i></Link>
-          </div>
+          </Reveal>
           <LoadState />
           {ready && (
             <div className="row g-4">
-              {popular.map((product) => (
-                <div className="col-12 col-sm-6 col-lg-3" key={product.id}><ProductCard product={product} /></div>
+              {popular.map((product, index) => (
+                <Reveal className="col-12 col-sm-6 col-lg-3" key={product.id} delay={index * 80}><ProductCard product={product} /></Reveal>
               ))}
             </div>
           )}
@@ -91,15 +93,15 @@ export default function Home() {
       {ready && deals.length > 0 && (
         <section className="section section--tint" aria-labelledby="deals-title">
           <div className="container">
-            <div className="section-head">
+            <Reveal className="section-head">
               <div>
                 <h2 id="deals-title" className="section-title">Скидки недели</h2>
                 <p className="section-subtitle">{deals.length} {pluralize(deals.length, 'товар', 'товара', 'товаров')} со сниженной ценой</p>
               </div>
-            </div>
+            </Reveal>
             <div className="row g-4">
-              {deals.map((product) => (
-                <div className="col-12 col-sm-6 col-lg-4" key={product.id}><ProductCard product={product} /></div>
+              {deals.map((product, index) => (
+                <Reveal className="col-12 col-sm-6 col-lg-4" key={product.id} delay={(index % 3) * 80}><ProductCard product={product} /></Reveal>
               ))}
             </div>
           </div>
@@ -108,17 +110,19 @@ export default function Home() {
 
       <section className="section" aria-labelledby="advantages-title">
         <div className="container">
-          <h2 id="advantages-title" className="section-title text-center">Почему выбирают нас</h2>
-          <p className="section-subtitle text-center mb-4">Покупать технику должно быть просто</p>
+          <Reveal>
+            <h2 id="advantages-title" className="section-title text-center">Почему выбирают нас</h2>
+            <p className="section-subtitle text-center mb-4">Покупать технику должно быть просто</p>
+          </Reveal>
           <div className="row g-4">
-            {advantages.map((item) => (
-              <div className="col-12 col-sm-6 col-lg-3" key={item.title}>
+            {advantages.map((item, index) => (
+              <Reveal className="col-12 col-sm-6 col-lg-3" key={item.title} delay={index * 80}>
                 <div className="feature h-100">
                   <span className="feature__icon" aria-hidden="true"><i className={`bi ${item.icon}`}></i></span>
                   <h3 className="feature__title">{item.title}</h3>
                   <p className="feature__text">{item.text}</p>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -127,11 +131,13 @@ export default function Home() {
       {ready && reviews.length > 0 && (
         <section className="section section--tint" aria-labelledby="reviews-title">
           <div className="container">
-            <h2 id="reviews-title" className="section-title">Отзывы покупателей</h2>
-            <p className="section-subtitle mb-4">Что говорят о товарах те, кто уже купил</p>
+            <Reveal>
+              <h2 id="reviews-title" className="section-title">Отзывы покупателей</h2>
+              <p className="section-subtitle mb-4">Что говорят о товарах те, кто уже купил</p>
+            </Reveal>
             <div className="row g-4">
-              {reviews.map((review) => (
-                <div className="col-12 col-md-4" key={`${review.product.id}-${review.author}`}>
+              {reviews.map((review, index) => (
+                <Reveal className="col-12 col-md-4" key={`${review.product.id}-${review.author}`} delay={index * 100}>
                   <figure className="quote h-100">
                     <div className="quote__stars" role="img" aria-label="Оценка 5 из 5">
                       {[1, 2, 3, 4, 5].map((n) => <i key={n} className="bi bi-star-fill" aria-hidden="true"></i>)}
@@ -141,7 +147,7 @@ export default function Home() {
                       {review.author} · <Link to={`/product/${review.product.id}`}>{review.product.title}</Link>
                     </figcaption>
                   </figure>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -150,13 +156,13 @@ export default function Home() {
 
       <section className="section">
         <div className="container">
-          <div className="cta">
+          <Reveal className="cta" variant="zoom">
             <div>
               <h2 className="cta__title">Не знаете, что выбрать?</h2>
-              <p className="cta__text">Оставьте заявку — поможем подобрать гаджет под ваши задачи и бюджет.</p>
+              <p className="cta__text">Позвоните или напишите нам — поможем подобрать гаджет под ваши задачи и бюджет.</p>
             </div>
-            <Link className="btn btn-accent btn-lg" to="/order">Оставить заявку</Link>
-          </div>
+            <Link className="btn btn-accent btn-lg" to="/contacts#feedback">Получить консультацию</Link>
+          </Reveal>
         </div>
       </section>
     </>

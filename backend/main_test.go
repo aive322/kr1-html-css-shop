@@ -28,8 +28,8 @@ func TestProductsAPI(t *testing.T) {
 	if err := json.Unmarshal(rec.Body.Bytes(), &got); err != nil {
 		t.Fatal(err)
 	}
-	if len(got) != 9 {
-		t.Fatalf("товаров %d, ожидалось 9", len(got))
+	if len(got) != 18 {
+		t.Fatalf("товаров %d, ожидалось 18", len(got))
 	}
 	if got[2].Title != "Power Bank 20000" || got[2].Price != 2000 || got[2].OldPrice != 2500 {
 		t.Fatalf("неверные данные Power Bank: %+v", got[2])
@@ -61,7 +61,7 @@ func TestGzip(t *testing.T) {
 		t.Fatal(err)
 	}
 	var got []Product
-	if err := json.NewDecoder(zr).Decode(&got); err != nil || len(got) != 9 {
+	if err := json.NewDecoder(zr).Decode(&got); err != nil || len(got) != 18 {
 		t.Fatalf("сжатый ответ не читается: %v, товаров %d", err, len(got))
 	}
 }

@@ -3,6 +3,7 @@ import ProductImage from './ProductImage.jsx';
 import ProductBadge from './ProductBadge.jsx';
 import FavoriteButton from './FavoriteButton.jsx';
 import Rating from './Rating.jsx';
+import CartButton from './CartButton.jsx';
 import { formatPrice } from '../utils/price.js';
 
 export default function ProductCard({ product, headingLevel = 3, eager = false }) {
@@ -35,9 +36,7 @@ export default function ProductCard({ product, headingLevel = 3, eager = false }
             )}
           </p>
           {product.isAvailable ? (
-            <Link className="btn btn-primary btn-sm" to={`/order?product=${product.id}`} aria-label={`Заказать: ${product.title}`}>
-              <i className="bi bi-bag-plus me-1" aria-hidden="true"></i>Заказать
-            </Link>
+            <CartButton product={product} />
           ) : (
             <span className="soldout-note">Нет в наличии</span>
           )}

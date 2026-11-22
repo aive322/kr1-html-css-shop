@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useProducts } from '../context/ProductsContext.jsx';
 import usePageMeta from '../hooks/usePageMeta.js';
 import PageHeader from '../components/PageHeader.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import LoadState from '../components/LoadState.jsx';
+import Reveal from '../components/Reveal.jsx';
 import { formatPrice, pluralize } from '../utils/price.js';
 
 const labels = [
@@ -25,7 +27,14 @@ export default function Catalog() {
   const { products, status } = useProducts();
   const maxAvailablePrice = useMemo(() => Math.max(0, ...products.map((p) => p.price)), [products]);
 
-  const [query, setQuery] = useState('');
+  const [searchParams] = useSearchParams();
+  const [query, setQuery] = useState(() => searchParams.get('q') ?? '');
+
+  // Запрос из окна поиска в шапке: /catalog?q=наушники
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q !== null) setQuery(q);
+  }, [searchParams]);
   const [label, setLabel] = useState('all');
   const [maxPrice, setMaxPrice] = useState(null);
   const [onlyAvailable, setOnlyAvailable] = useState(false);
@@ -113,7 +122,7 @@ export default function Catalog() {
                     <label className="form-check-label" htmlFor="only-available">Только в наличии</label>
                   </div>
 
-                  <button type="button" className="btn btn-light w-100" onClick={reset}>Сбросить фильтры</button>
+                  <button type="button" className="btn btn-outline-secondary w-100" onClick={reset}>Сбросить фильтры</button>
                 </form>
               </aside>
 
@@ -131,13 +140,13 @@ export default function Catalog() {
                 {visible.length > 0 ? (
                   <div className="row g-4">
                     {visible.map((product, index) => (
-                      <div className="col-12 col-sm-6 col-xl-4" key={product.id}>
+                      <Reveal className="col-12 col-sm-6 col-xl-4" key={product.id} delay={(index % 3) * 70}>
                         <ProductCard product={product} headingLevel={2} eager={index < 3} />
-                      </div>
+                      </Reveal>
                     ))}
                   </div>
                 ) : (
-                  <div className="empty-state">
+                  <div className="empty-state pop-in">
                     <i className="bi bi-search" aria-hidden="true"></i>
                     <h2 className="h5">Ничего не нашлось</h2>
                     <p>Попробуйте изменить запрос или сбросить фильтры.</p>

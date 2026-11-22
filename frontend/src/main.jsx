@@ -18,6 +18,10 @@ import './styles/app.css';
 import App from './App.jsx';
 import { ProductsProvider } from './context/ProductsContext.jsx';
 import { FavoritesProvider } from './context/FavoritesContext.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
+import { ToastProvider } from './context/ToastContext.jsx';
+import { CartProvider } from './context/CartContext.jsx';
+import { AccountProvider } from './context/AccountContext.jsx';
 
 // GitHub Pages не знает адресов React Router (например, /catalog) и
 // открывает 404.html, который перенаправляет на главную с ?p=catalog.
@@ -30,11 +34,19 @@ if (redirectPath) {
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-      <ProductsProvider>
-        <FavoritesProvider>
-          <App />
-        </FavoritesProvider>
-      </ProductsProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <ProductsProvider>
+            <AccountProvider>
+              <FavoritesProvider>
+                <CartProvider>
+                  <App />
+                </CartProvider>
+              </FavoritesProvider>
+            </AccountProvider>
+          </ProductsProvider>
+        </ToastProvider>
+      </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

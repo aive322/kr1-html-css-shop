@@ -11,7 +11,18 @@ export default defineConfig(({ mode }) => {
     base: pages ? '/kr1-html-css-shop/' : '/',
     build: {
       outDir: pages ? '../docs' : 'dist',
-      emptyOutDir: true
+      emptyOutDir: true,
+      // Для GitHub Pages имена файлов без хеша: при пересборке файлы в docs/
+      // заменяются, а не копятся в репозитории.
+      rollupOptions: pages
+        ? {
+            output: {
+              entryFileNames: 'assets/app.js',
+              chunkFileNames: 'assets/[name].js',
+              assetFileNames: 'assets/[name][extname]'
+            }
+          }
+        : undefined
     },
     server: {
       port: 5173,
