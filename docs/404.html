@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Страница не найдена — ТехноМаркет</title>
+  <meta name="robots" content="noindex">
+  <script>
+    // GitHub Pages не знает адресов React Router (например, /catalog или /product/3)
+    // и показывает этот файл. Перенаправляем на главную с параметром ?p=catalog,
+    // а React (src/main.jsx) сам откроет нужную страницу.
+    (function () {
+      var base = '/kr1-html-css-shop/';
+      var loc = window.location;
+      if (loc.pathname.indexOf(base) === 0 && loc.pathname !== base) {
+        var rest = loc.pathname.slice(base.length) + loc.search + loc.hash;
+        loc.replace(base + '?p=' + encodeURIComponent(rest));
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p>Страница не найдена. <a href="/kr1-html-css-shop/">Перейти на главную ТехноМаркет</a></p>
+</body>
+</html>

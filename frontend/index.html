@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ТехноМаркет — гаджеты и аксессуары для работы и учёбы</title>
+    <meta name="description" content="ТехноМаркет — интернет-магазин гаджетов: беспроводные мыши и наушники, клавиатуры, power bank, веб-камеры, умные часы и SSD. Актуальные цены, скидки и отзывы покупателей." />
+    <meta name="theme-color" content="#0f172a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ТехноМаркет — гаджеты и аксессуары" />
+    <meta property="og:description" content="Каталог гаджетов с ценами, скидками и отзывами покупателей." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      /* Тема ставится до загрузки React, чтобы страница не «мигала» светлой. */
+      try {
+        var t = localStorage.getItem('tm-theme');
+        if (t !== 'dark' && t !== 'light') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-bs-theme', t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Для работы сайта «ТехноМаркет» необходимо включить JavaScript.</noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -15,3 +15,13 @@ Thumbs.db
 # Переменные окружения
 .env
 .env.*
+
+# React (frontend): зависимости и сборка для Go-сервера
+frontend/node_modules/
+frontend/dist/
+# создаётся скриптом scripts/sync-data.mjs
+frontend/public/products.json
+
+# Go (backend): собранная программа
+backend/*.exe
+backend/backend
