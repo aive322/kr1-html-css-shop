@@ -19,6 +19,7 @@ Thumbs.db
 # React (frontend): зависимости и сборка для Go-сервера
 frontend/node_modules/
 frontend/dist/
+frontend/src/generated/go-demo/
 # создаётся скриптом scripts/sync-data.mjs
 frontend/public/products.json
 

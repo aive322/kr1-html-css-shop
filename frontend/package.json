@@ -6,9 +6,10 @@
   "description": "React-версия учебного интернет-магазина «ТехноМаркет»",
   "scripts": {
     "sync-data": "node scripts/sync-data.mjs",
-    "dev": "npm run sync-data && vite",
-    "build": "npm run sync-data && vite build",
-    "build:pages": "npm run sync-data && vite build --mode pages",
+    "build:go-demo": "node scripts/build-go-demo.mjs",
+    "dev": "npm run sync-data && node scripts/build-go-demo.mjs --optional && vite",
+    "build": "npm run sync-data && node scripts/build-go-demo.mjs --optional && vite build",
+    "build:pages": "npm run sync-data && npm run build:go-demo && vite build --mode pages",
     "preview": "vite preview"
   },
   "dependencies": {

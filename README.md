@@ -99,6 +99,25 @@ Vite перенаправляет запросы `/api` на Go-сервер.
 
 Тесты сервера: `cd backend && go test ./...`
 
+## Практика №15 в консоли браузера
+
+При загрузке страницы откройте DevTools → Console. Под заголовком «Практика №15 (Go / WebAssembly)» появится таблица с ценой, скидкой, наличием и описанием товара. Эти вычисления выполняются в браузере и доступны на GitHub Pages.
+
+Можно повторить демонстрацию и вызвать функции со своими аргументами:
+
+```js
+await goDemoReady
+goDemo.help()
+goDemo.run()
+goDemo.formatPrice(1990)
+goDemo.calculateDiscount(1990, 2490) // 500 рублей
+goDemo.getProductStatus(false)
+goDemo.createProductSummary({ title: 'Мышь', price: 1990, isAvailable: true })
+goDemo.run({ title: 'Мышь', price: 1990, oldPrice: 2490, isAvailable: true })
+```
+
+`npm run dev` и `npm run build` собирают WebAssembly, если установлен Go 1.22+. Чтобы собрать только демонстрацию, выполните `npm run build:go-demo` в папке `frontend`. Команда `npm run build:pages` требует Go и включает демонстрацию в файлы для публикации.
+
 ## API
 
 `GET /api/products` → `200 OK`, `application/json`, массив товаров:

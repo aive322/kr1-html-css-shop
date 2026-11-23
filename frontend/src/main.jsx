@@ -16,6 +16,7 @@ import 'bootstrap-icons/font/bootstrap-icons.min.css';
 import './styles/app.css';
 
 import App from './App.jsx';
+import { startGoDemo } from './goDemo.js';
 import { ProductsProvider } from './context/ProductsContext.jsx';
 import { FavoritesProvider } from './context/FavoritesContext.jsx';
 import { ThemeProvider } from './context/ThemeContext.jsx';
@@ -30,6 +31,8 @@ const redirectPath = new URLSearchParams(window.location.search).get('p');
 if (redirectPath) {
   window.history.replaceState(null, '', import.meta.env.BASE_URL + redirectPath.replace(/^\//, ''));
 }
+
+startGoDemo();
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
