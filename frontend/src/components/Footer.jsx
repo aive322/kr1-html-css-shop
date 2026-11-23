@@ -67,12 +67,6 @@ export default function Footer() {
           <div className="col-12 col-lg-4">
             <Link to="/" className="d-inline-block mb-3"><Logo light /></Link>
             <p className="site-footer__text">Магазин гаджетов и аксессуаров с {company.founded} года. Привозим технику для работы, учёбы и отдыха, даём гарантию и помогаем с выбором.</p>
-            <ul className="list-unstyled site-footer__social" aria-label="Мы в соцсетях">
-              <li><a href="https://t.me/" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i className="bi bi-telegram" aria-hidden="true"></i></a></li>
-              <li><a href="https://vk.com/" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте"><i className="bi bi-chat-square-heart" aria-hidden="true"></i></a></li>
-              <li><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i className="bi bi-youtube" aria-hidden="true"></i></a></li>
-              <li><a href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i className="bi bi-whatsapp" aria-hidden="true"></i></a></li>
-            </ul>
           </div>
           <div className="col-6 col-md-4 col-lg-2">
             <h2 className="site-footer__title">Покупателям</h2>
@@ -105,6 +99,12 @@ export default function Footer() {
                 <i className="bi bi-envelope" aria-hidden="true"></i>
                 <a href={company.email.href}>{company.email.text}</a>
               </li>
+            </ul>
+            <ul className="list-unstyled site-footer__social" aria-label="Мы в соцсетях">
+              <li><a href="https://t.me/" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i className="bi bi-telegram" aria-hidden="true"></i></a></li>
+              <li><a href="https://vk.com/" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте"><i className="bi bi-chat-square-heart" aria-hidden="true"></i></a></li>
+              <li><a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i className="bi bi-youtube" aria-hidden="true"></i></a></li>
+              <li><a href="https://wa.me/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i className="bi bi-whatsapp" aria-hidden="true"></i></a></li>
             </ul>
           </div>
         </div>
