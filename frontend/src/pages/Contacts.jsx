@@ -140,7 +140,7 @@ export default function Contacts() {
                     {pickupSchedule.map(([day, time]) => <tr key={day}><th scope="row">{day}</th><td>{time}</td></tr>)}
                   </tbody>
                 </table>
-                <p className="mt-4 mb-2">Адрес самовывоза указан для учебного проекта. На карте отмечено метро «Электрозаводская».</p>
+                <p className="mt-4 mb-2">На карте отмечено метро «Электрозаводская».</p>
                 <a href={`https://yandex.ru/maps/?text=${mapQuery}`} target="_blank" rel="noopener noreferrer">
                   Открыть в Яндекс Картах
                 </a>
