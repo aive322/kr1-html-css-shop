@@ -163,7 +163,7 @@ export default function Contacts() {
       <section className="section" aria-labelledby="departments-title">
         <div className="container">
           <h2 id="departments-title" className="section-title">Отделы</h2>
-          <div className="row g-4 mt-1">
+          <div className="row g-4 mt-1 mobile-card-grid">
             {departments.map((d, i) => (
               <Reveal className="col-12 col-md-6 col-xl-3" key={d.title} delay={i * 80}>
                 <div className="department h-100">
@@ -171,7 +171,7 @@ export default function Contacts() {
                   <h3 className="feature__title">{d.title}</h3>
                   <p className="feature__text">{d.text}</p>
                   <ul className="list-unstyled department__list">
-                    <li><i className="bi bi-telephone" aria-hidden="true"></i><a href={d.phone.href} className="text-nowrap">{d.phone.text}</a></li>
+                    <li><i className="bi bi-telephone" aria-hidden="true"></i><a href={d.phone.href}>{d.phone.text}</a></li>
                     <li><i className="bi bi-envelope" aria-hidden="true"></i><a href={d.email.href}>{d.email.text}</a></li>
                     <li><i className="bi bi-clock" aria-hidden="true"></i>{d.hours}</li>
                   </ul>
@@ -185,7 +185,7 @@ export default function Contacts() {
       <section className="section section--tint" id="delivery" tabIndex={-1} aria-labelledby="delivery-title">
         <div className="container">
           <h2 id="delivery-title" className="section-title">Доставка и оплата</h2>
-          <div className="row g-4 mt-1">
+          <div className="row g-4 mt-1 mobile-card-grid">
             {delivery.map((d, i) => (
               <Reveal className="col-12 col-sm-6 col-lg-3" key={d.title} delay={i * 80}>
                 <div className="feature h-100">

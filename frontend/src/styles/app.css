@@ -1499,3 +1499,36 @@ section[tabindex="-1"]:focus, div[tabindex="-1"]:focus { outline: none; }
 }
 
 .product-card__footer .btn { flex-shrink: 0; white-space: nowrap; }
+
+.hero__actions { flex-wrap: wrap; gap: 16px; }
+
+@media (max-width: 767.98px) {
+  .mobile-card-grid:has(> :nth-child(4)) {
+    --bs-gutter-x: 12px;
+    --bs-gutter-y: 12px;
+
+    > * { width: 50%; min-width: 0; }
+    :is(.product-card__body, .feature, .department, .review) {
+      padding: 12px;
+      overflow-wrap: anywhere;
+    }
+    .product-card__media { padding: 14px; }
+    .product-card__badge {
+      left: 8px;
+      top: 8px;
+      max-width: calc(100% - 60px);
+      padding-inline: 6px;
+    }
+    .product-card__fav { right: 8px; top: 8px; }
+    .product-card__footer { flex-direction: column; align-items: stretch; gap: 6px; }
+    .product-card__footer .btn { min-height: 44px; white-space: normal; }
+    .product-card__price { font-size: 1.05rem; }
+    .product-card__title, .feature__title { font-size: 1rem; }
+    .review > .d-flex { flex-wrap: wrap; }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .hero__actions { flex-wrap: nowrap; gap: 8px; }
+  .hero__actions .btn { --bs-btn-padding-x: 12px; --bs-btn-font-size: 0.9rem; }
+}

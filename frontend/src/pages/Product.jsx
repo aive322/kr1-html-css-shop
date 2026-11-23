@@ -219,7 +219,7 @@ export default function Product() {
               </div>
             </Reveal>
             <div className="col-lg-8">
-              <div className="row g-3">
+              <div className="row g-3 mobile-card-grid">
                 {allReviews.map((review, index) => (
                   <Reveal className="col-md-6" key={review.id ?? review.author} delay={Math.min(index, 3) * 80}>
                     <article className="review h-100">

@@ -85,7 +85,7 @@ export default function About() {
       <section className="section" aria-labelledby="values-title">
         <div className="container">
           <h2 id="values-title" className="section-title">Наши принципы</h2>
-          <div className="row g-4 mt-1">
+          <div className="row g-4 mt-1 mobile-card-grid">
             {values.map((v, i) => (
               <Reveal className="col-12 col-sm-6 col-lg-3" key={v.title} delay={i * 80}>
                 <div className="feature h-100">

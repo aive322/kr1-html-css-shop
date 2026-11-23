@@ -12,12 +12,12 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: pages ? '../docs' : 'dist',
       emptyOutDir: true,
-      // Новый URL для скрипта и WebAssembly при изменении их содержимого.
+      // Новый URL для скриптов, стилей и WebAssembly при изменении содержимого.
       rollupOptions: pages
         ? {
             output: {
               entryFileNames: 'assets/app-[hash].js',
-              assetFileNames: ({ names }) => names.some((name) => name === 'go-demo.wasm' || name === 'wasm_exec.js')
+              assetFileNames: ({ names }) => names.some((name) => name.endsWith('.css') || name === 'go-demo.wasm' || name === 'wasm_exec.js')
                 ? 'assets/[name]-[hash][extname]'
                 : 'assets/[name][extname]'
             }

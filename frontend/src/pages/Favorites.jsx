@@ -20,7 +20,7 @@ export default function Favorites() {
         <div className="container">
           <LoadState />
           {status === 'ready' && (items.length > 0 ? (
-            <div className="row g-4">
+            <div className="row g-4 mobile-card-grid">
               {items.map((p, index) => <Reveal className="col-12 col-sm-6 col-lg-4 col-xl-3" key={p.id} delay={(index % 4) * 70}><ProductCard product={p} headingLevel={2} /></Reveal>)}
             </div>
           ) : (

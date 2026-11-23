@@ -187,7 +187,7 @@ function MyReviews() {
     );
   }
   return (
-    <div className="row g-3">
+    <div className="row g-3 mobile-card-grid">
       {myReviews.map((r) => {
         const product = products.find((p) => p.id === r.productId);
         return (
@@ -305,7 +305,7 @@ export default function Account() {
               {favorites.length > 0 && (
                 <div className="mt-5">
                   <h2 className="section-title h3">Избранные товары</h2>
-                  <div className="row g-4">
+                  <div className="row g-4 mobile-card-grid">
                     {favorites.map((p, i) => <Reveal className="col-12 col-sm-6 col-lg-3" key={p.id} delay={(i % 4) * 70}><ProductCard product={p} /></Reveal>)}
                   </div>
                 </div>
@@ -340,7 +340,7 @@ export default function Account() {
               <div className="account-panel anim-fade-up" role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`} key={tab}>
                 {tab === 'orders' && <Orders orders={myOrders} />}
                 {tab === 'favorites' && (favorites.length ? (
-                  <div className="row g-4">
+                  <div className="row g-4 mobile-card-grid">
                     {favorites.map((p) => <div className="col-12 col-sm-6 col-lg-4 col-xl-3" key={p.id}><ProductCard product={p} /></div>)}
                   </div>
                 ) : (

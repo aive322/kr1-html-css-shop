@@ -138,7 +138,7 @@ export default function Catalog() {
                 </div>
 
                 {visible.length > 0 ? (
-                  <div className="row g-4">
+                  <div className="row g-4 mobile-card-grid">
                     {visible.map((product, index) => (
                       <Reveal className="col-12 col-sm-6 col-xl-4" key={product.id} delay={(index % 3) * 70}>
                         <ProductCard product={product} headingLevel={2} eager={index < 3} />

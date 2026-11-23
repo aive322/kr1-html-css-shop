@@ -98,7 +98,7 @@ export default function Cart() {
         <section className="section section--tint" aria-labelledby="also-title">
           <div className="container">
             <h2 id="also-title" className="section-title">С этим покупают</h2>
-            <div className="row g-4 mt-1">
+            <div className="row g-4 mt-1 mobile-card-grid">
               {recommended.map((p, index) => (
                 <Reveal className="col-12 col-sm-6 col-lg-3" key={p.id} delay={index * 70}><ProductCard product={p} /></Reveal>
               ))}

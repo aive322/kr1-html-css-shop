@@ -42,7 +42,7 @@ export default function Home() {
               <p className="hero__eyebrow">Интернет-магазин гаджетов</p>
               <h1 className="hero__title">Техника, которая <span>работает на вас</span></h1>
               <p className="hero__lead">Беспроводные мыши и наушники, клавиатуры, внешние аккумуляторы и умные часы. Честные цены, скидки и отзывы реальных покупателей.</p>
-              <div className="d-flex flex-wrap gap-3">
+              <div className="hero__actions d-flex">
                 <Link className="btn btn-accent btn-lg" to="/catalog">Перейти в каталог <i className="bi bi-arrow-right ms-1" aria-hidden="true"></i></Link>
                 <Link className="btn btn-outline-light btn-lg" to="/about">О магазине</Link>
               </div>
@@ -81,7 +81,7 @@ export default function Home() {
           </Reveal>
           <LoadState />
           {ready && (
-            <div className="row g-4">
+            <div className="row g-4 mobile-card-grid">
               {popular.map((product, index) => (
                 <Reveal className="col-12 col-sm-6 col-lg-3" key={product.id} delay={index * 80}><ProductCard product={product} /></Reveal>
               ))}
@@ -99,7 +99,7 @@ export default function Home() {
                 <p className="section-subtitle">{deals.length} {pluralize(deals.length, 'товар', 'товара', 'товаров')} со сниженной ценой</p>
               </div>
             </Reveal>
-            <div className="row g-4">
+            <div className="row g-4 mobile-card-grid">
               {deals.map((product, index) => (
                 <Reveal className="col-12 col-sm-6 col-lg-4" key={product.id} delay={(index % 3) * 80}><ProductCard product={product} /></Reveal>
               ))}
@@ -114,7 +114,7 @@ export default function Home() {
             <h2 id="advantages-title" className="section-title text-center">Почему выбирают нас</h2>
             <p className="section-subtitle text-center mb-4">Покупать технику должно быть просто</p>
           </Reveal>
-          <div className="row g-4">
+          <div className="row g-4 mobile-card-grid">
             {advantages.map((item, index) => (
               <Reveal className="col-12 col-sm-6 col-lg-3" key={item.title} delay={index * 80}>
                 <div className="feature h-100">

@@ -8,7 +8,7 @@ export default function LoadState() {
     return (
       <div className="load-state" role="status">
         <span className="visually-hidden">Загружаем товары…</span>
-        <div className="row g-4" aria-hidden="true">
+        <div className="row g-4 mobile-card-grid" aria-hidden="true">
           {[0, 1, 2, 3].map((n) => (
             <div className="col-12 col-sm-6 col-lg-3" key={n}>
               <div className="skeleton-card">
