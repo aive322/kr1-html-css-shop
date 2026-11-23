@@ -79,12 +79,13 @@ export default function Header() {
               <i className="bi bi-heart" aria-hidden="true"></i>
               {ids.length > 0 && <span key={ids.length} className="icon-link-btn__count" aria-hidden="true">{ids.length}</span>}
             </NavLink>
+            <NavLink className="icon-link-btn d-none d-sm-inline-flex" to="/account" aria-label={user ? `Личный кабинет: ${user.name}` : 'Войти в личный кабинет'}>
+              <i className={`bi ${user ? 'bi-person-check-fill' : 'bi-person'}`} aria-hidden="true"></i>
+            </NavLink>
+
             <NavLink className="icon-link-btn" to="/cart" aria-label={`Корзина: ${totals.count} шт.`}>
               <i className="bi bi-bag" aria-hidden="true"></i>
               {totals.count > 0 && <span key={totals.count} className="icon-link-btn__count" aria-hidden="true">{totals.count}</span>}
-            </NavLink>
-            <NavLink className="icon-link-btn d-none d-sm-inline-flex" to="/account" aria-label={user ? `Личный кабинет: ${user.name}` : 'Войти в личный кабинет'}>
-              <i className={`bi ${user ? 'bi-person-check-fill' : 'bi-person'}`} aria-hidden="true"></i>
             </NavLink>
             <button
               className="navbar-toggler"
