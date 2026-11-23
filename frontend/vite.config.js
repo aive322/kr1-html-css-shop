@@ -12,14 +12,14 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: pages ? '../docs' : 'dist',
       emptyOutDir: true,
-      // Для GitHub Pages имена файлов без хеша: при пересборке файлы в docs/
-      // заменяются, а не копятся в репозитории.
+      // Новый URL для скрипта и WebAssembly при изменении их содержимого.
       rollupOptions: pages
         ? {
             output: {
-              entryFileNames: 'assets/app.js',
-              chunkFileNames: 'assets/[name].js',
-              assetFileNames: 'assets/[name][extname]'
+              entryFileNames: 'assets/app-[hash].js',
+              assetFileNames: ({ names }) => names.some((name) => name === 'go-demo.wasm' || name === 'wasm_exec.js')
+                ? 'assets/[name]-[hash][extname]'
+                : 'assets/[name][extname]'
             }
           }
         : undefined
