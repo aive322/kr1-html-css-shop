@@ -69,24 +69,83 @@ export default function Header() {
           </Link>
 
           <div className="header-actions order-lg-last">
-            <button type="button" className="icon-link-btn d-none d-sm-inline-flex" onClick={() => setSearchOpen(true)} aria-label="Поиск по каталогу (Ctrl+K)">
+            {/* Поиск */}
+            <button
+              type="button"
+              className="icon-link-btn d-none d-sm-inline-flex"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Поиск по каталогу (Ctrl+K)"
+            >
               <i className="bi bi-search" aria-hidden="true"></i>
             </button>
-            <button type="button" ref={themeBtn} className="icon-link-btn theme-toggle" onClick={() => toggleTheme(themeBtn.current)} aria-label={dark ? 'Включить светлую тему' : 'Включить тёмную тему'} title={dark ? 'Светлая тема' : 'Тёмная тема'}>
-              <i key={theme} className={`bi ${dark ? 'bi-sun' : 'bi-moon-stars'}`} aria-hidden="true"></i>
+
+            {/* Переключение темы */}
+            <button
+              type="button"
+              ref={themeBtn}
+              className="icon-link-btn theme-toggle"
+              onClick={() => toggleTheme(themeBtn.current)}
+              aria-label={dark ? 'Включить светлую тему' : 'Включить тёмную тему'}
+              title={dark ? 'Светлая тема' : 'Тёмная тема'}
+            >
+              <i
+                key={theme}
+                className={`bi ${dark ? 'bi-sun' : 'bi-moon-stars'}`}
+                aria-hidden="true"
+              ></i>
             </button>
-            <NavLink className="icon-link-btn d-none d-sm-inline-flex" to="/favorites" aria-label={`Избранное: ${ids.length}`}>
+
+            {/* Избранное */}
+            <NavLink
+              className="icon-link-btn d-none d-sm-inline-flex"
+              to="/favorites"
+              aria-label={`Избранное: ${ids.length}`}
+            >
               <i className="bi bi-heart" aria-hidden="true"></i>
-              {ids.length > 0 && <span key={ids.length} className="icon-link-btn__count" aria-hidden="true">{ids.length}</span>}
-            </NavLink>
-            <NavLink className="icon-link-btn d-none d-sm-inline-flex" to="/account" aria-label={user ? `Личный кабинет: ${user.name}` : 'Войти в личный кабинет'}>
-              <i className={`bi ${user ? 'bi-person-check-fill' : 'bi-person'}`} aria-hidden="true"></i>
+              {ids.length > 0 && (
+                <span
+                  key={ids.length}
+                  className="icon-link-btn__count"
+                  aria-hidden="true"
+                >
+                  {ids.length}
+                </span>
+              )}
             </NavLink>
 
-            <NavLink className="icon-link-btn" to="/cart" aria-label={`Корзина: ${totals.count} шт.`}>
+            {/* Корзина */}
+            <NavLink
+              className="icon-link-btn"
+              to="/cart"
+              aria-label={`Корзина: ${totals.count} шт.`}
+            >
               <i className="bi bi-bag" aria-hidden="true"></i>
-              {totals.count > 0 && <span key={totals.count} className="icon-link-btn__count" aria-hidden="true">{totals.count}</span>}
+              {totals.count > 0 && (
+                <span
+                  key={totals.count}
+                  className="icon-link-btn__count"
+                  aria-hidden="true"
+                >
+                  {totals.count}
+                </span>
+              )}
             </NavLink>
+
+            {/* Личный кабинет — последняя иконка справа */}
+            <NavLink
+              className="icon-link-btn d-none d-sm-inline-flex"
+              to="/account"
+              aria-label={
+                user ? `Личный кабинет: ${user.name}` : 'Войти в личный кабинет'
+              }
+            >
+              <i
+                className={`bi ${user ? 'bi-person-check-fill' : 'bi-person'}`}
+                aria-hidden="true"
+              ></i>
+            </NavLink>
+
+            {/* Кнопка мобильного меню */}
             <button
               className="navbar-toggler"
               type="button"
@@ -95,7 +154,10 @@ export default function Header() {
               aria-label={open ? 'Закрыть меню' : 'Открыть меню'}
               onClick={() => setOpen((value) => !value)}
             >
-              <i className={`bi ${open ? 'bi-x-lg' : 'bi-list'}`} aria-hidden="true"></i>
+              <i
+                className={`bi ${open ? 'bi-x-lg' : 'bi-list'}`}
+                aria-hidden="true"
+              ></i>
             </button>
           </div>
 
